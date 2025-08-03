@@ -1,0 +1,97 @@
+ MySQL  localhost:3306 ssl  JS > \sql
+Switching to SQL mode... Commands end with ;
+Fetching global names for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  SQL > \onnect root@localhost:3306
+Unknown command: '\onnect root@localhost:3306'
+ MySQL  localhost:3306 ssl  SQL > \connect root@localhost:3306
+Creating a session to 'root@localhost:3306'
+Fetching global names for auto-completion... Press ^C to stop.
+Closing old connection...
+Your MySQL connection id is 15
+Server version: 8.0.43 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| first              |
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
+4 rows in set (0.0016 sec)
+CREATE TABLE Students (
+                                                    ->     student_id INT PRIMARY KEY AUTO_INCREMENT,
+                                                    ->     first_name VARCHAR(50) NOT NULL,
+                                                    ->     last_name VARCHAR(50) NOT NULL,
+                                                    ->     date_of_birth DATE,
+                                                    ->     email VARCHAR(100) UNIQUE NOT NULL,
+                                                    ->     gender ENUM('Male', 'Female', 'Other') DEFAULT 'Other',
+                                                    ->     enrollment_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                                                    -> );
+Query OK, 0 rows affected (0.0133 sec)
+ MySQL  localhost:3306 ssl  university_database  SQL >
+ MySQL  localhost:3306 ssl  university_database  SQL > desc students;
++-----------------+-------------------------------+------+-----+-------------------+-------------------+
+| Field           | Type                          | Null | Key | Default           | Extra             |
++-----------------+-------------------------------+------+-----+-------------------+-------------------+
+| student_id      | int                           | NO   | PRI | NULL              | auto_increment    |
+| first_name      | varchar(50)                   | NO   |     | NULL              |                   |
+| last_name       | varchar(50)                   | NO   |     | NULL              |                   |
+| date_of_birth   | date                          | YES  |     | NULL              |                   |
+| email           | varchar(100)                  | NO   | UNI | NULL              |                   |
+| gender          | enum('Male','Female','Other') | YES  |     | Other             |                   |
+| enrollment_date | datetime                      | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-----------------+-------------------------------+------+-----+-------------------+-------------------+
+7 rows in set (0.0071 sec)
+ CREATE TABLE Courses (
+                                                    ->     course_id INT PRIMARY KEY AUTO_INCREMENT,
+                                                    ->     course_name VARCHAR(100) NOT NULL,
+                                                    ->     course_code VARCHAR(10) UNIQUE NOT NULL,
+                                                    ->     credits INT NOT NULL CHECK (credits >= 1 AND credits <= 6),
+                                                    ->     department VARCHAR(50) NOT NULL
+                                                    -> );
+Query OK, 0 rows affected (0.0117 sec)
+ MySQL  localhost:3306 ssl  university_database  SQL >
+ MySQL  localhost:3306 ssl  university_database  SQL > desc Courses;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| course_id   | int          | NO   | PRI | NULL    | auto_increment |
+| course_name | varchar(100) | NO   |     | NULL    |                |
+| course_code | varchar(10)  | NO   | UNI | NULL    |                |
+| credits     | int          | NO   |     | NULL    |                |
+| department  | varchar(50)  | NO   |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.0028 sec)
+CREATE TABLE Enrollments (
+                                                    ->     enrollment_id INT PRIMARY KEY AUTO_INCREMENT,
+                                                    ->     student_id INT NOT NULL,
+                                                    ->     course_id INT NOT NULL,
+                                                    ->     enrollment_date DATE NOT NULL,
+                                                    ->     grade CHAR(2),
+                                                    ->
+                                                    ->     CONSTRAINT fk_student FOREIGN KEY (student_id) REFERENCES Students(student_id)
+                                                    ->         ON DELETE CASCADE,
+                                                    ->     CONSTRAINT fk_course FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+                                                    ->         ON DELETE CASCADE,
+                                                    ->     CONSTRAINT unique_enrollment UNIQUE (student_id, course_id)
+                                                    -> );
+Query OK, 0 rows affected (0.0128 sec)
+ MySQL  localhost:3306 ssl  university_database  SQL >
+ MySQL  localhost:3306 ssl  university_database  SQL > desc enrollment;
+ERROR: 1146 (42S02): Table 'university_database.enrollment' doesn't exist
+ MySQL  localhost:3306 ssl  university_database  SQL > desc enrollment
+                                                    -> desc Enrollment;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc Enrollment' at line 2
+ MySQL  localhost:3306 ssl  university_database  SQL > desc Enrollments;
++-----------------+---------+------+-----+---------+----------------+
+| Field           | Type    | Null | Key | Default | Extra          |
++-----------------+---------+------+-----+---------+----------------+
+| enrollment_id   | int     | NO   | PRI | NULL    | auto_increment |
+| student_id      | int     | NO   | MUL | NULL    |                |
+| course_id       | int     | NO   | MUL | NULL    |                |
+| enrollment_date | date    | NO   |     | NULL    |                |
+| grade           | char(2) | YES  |     | NULL    |                |
++-----------------+---------+------+-----+---------+----------------+
+5 rows in set (0.0034 sec)
