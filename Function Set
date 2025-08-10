@@ -1,0 +1,147 @@
+ MySQL  localhost:33060+ ssl  university_database  SQL > select upper(name) as upper_name from student;
++------------+
+| upper_name |
++------------+
+| AMIT       |
+| SNEHA      |
+| ARJUN      |
+| KAVYA      |
+| ROHIT      |
++------------+
+5 rows in set (0.0025 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select left(name, 3) as short_name from student;
++------------+
+| short_name |
++------------+
+| ami        |
+| sne        |
+| arj        |
+| kav        |
+| roh        |
++------------+
+5 rows in set (0.0011 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select concat(name, ' - ', address) as name_with_address from student;
++-------------------+
+| name_with_address |
++-------------------+
+| NULL              |
+| sneha - pune      |
+| arjun - mumbai    |
+| kavya - nagpur    |
+| rohit - nashik    |
++-------------------+
+5 rows in set (0.0013 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select sum(credit) as total_credits from course;
++---------------+
+| total_credits |
++---------------+
+|            22 |
++---------------+
+1 row in set (0.0024 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select avg(credit) as avg_credit from course;
++------------+
+| avg_credit |
++------------+
+|     3.6667 |
++------------+
+1 row in set (0.0016 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select max(credit) as max_credit from course;
++------------+
+| max_credit |
++------------+
+|          4 |
++------------+
+1 row in set (0.0019 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select current_date() as today;
++------------+
+| today      |
++------------+
+| 2025-08-10 |
++------------+
+1 row in set (0.0022 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select name, year(dob) as birth_year from student;
++-------+------------+
+| name  | birth_year |
++-------+------------+
+| amit  |       NULL |
+| sneha |       2001 |
+| arjun |       2000 |
+| kavya |       2002 |
+| rohit |       2003 |
++-------+------------+
+5 rows in set (0.0018 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select name, timestampdiff(year, dob, curdate()) as age from student;
++-------+------+
+| name  | age  |
++-------+------+
+| amit  | NULL |
+| sneha |   24 |
+| arjun |   24 |
+| kavya |   23 |
+| rohit |   21 |
++-------+------+
+5 rows in set (0.0014 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select class, count(*) as total_students from student group by class;
++-------+----------------+
+| class | total_students |
++-------+----------------+
+| NULL  |              1 |
+| fy    |              1 |
+| sy    |              2 |
+| ty    |              1 |
++-------+----------------+
+4 rows in set (0.0012 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select address from student
+                                                      -> union
+                                                      -> select course_name from course;
++----------------------+
+| address              |
++----------------------+
+| NULL                 |
+| pune                 |
+| mumbai               |
+| nagpur               |
+| nashik               |
+| computer networks    |
+| data structures      |
+| dbms                 |
+| os                   |
+| software engineering |
+| toc                  |
++----------------------+
+11 rows in set (0.0021 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select address from student
+                                                      -> union all
+                                                      -> select course_name from course;
++----------------------+
+| address              |
++----------------------+
+| NULL                 |
+| pune                 |
+| mumbai               |
+| nagpur               |
+| nashik               |
+| computer networks    |
+| data structures      |
+| dbms                 |
+| os                   |
+| software engineering |
+| toc                  |
++----------------------+
+11 rows in set (0.0017 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select name from student
+                                                      -> where name in (select course_name from course);
+Empty set (0.0022 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select name from student
+                                                      -> where name not in (select course_name from course);
++-------+
+| name  |
++-------+
+| amit  |
+| sneha |
+| arjun |
+| kavya |
+| rohit |
++-------+
+5 rows in set (0.0015 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL >
