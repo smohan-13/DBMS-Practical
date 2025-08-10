@@ -1,0 +1,304 @@
+MySQL Shell 8.0.43
+
+Copyright (c) 2016, 2025, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > - u @localhost - p
+Expected ; but found error (SyntaxError)
+ MySQL  JS > \connect root@localhost
+Creating a session to 'root@localhost'
+Please provide the password for 'root@localhost': *********
+Save password for 'root@localhost'? [Y]es/[N]o/Ne[v]er (default No): Y
+Fetching schema names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8 (X protocol)
+Server version: 8.0.43 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:33060+ ssl  JS > show databases;
+Expected ; but found databases (SyntaxError)
+ MySQL  localhost:33060+ ssl  JS > MySQL  localhost:33060+ ssl  SQL >
+Expected ; but found localhost (SyntaxError)
+ MySQL  localhost:33060+ ssl  JS > \sql
+Switching to SQL mode... Commands end with ;
+Fetching global names for auto-completion... Press ^C to stop.
+ MySQL  localhost:33060+ ssl  SQL > MySQL  localhost:33060+ ssl  SQL >
+                                 -> ;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MySQL  localhost:33060+ ssl  SQL >' at line 1
+ MySQL  localhost:33060+ ssl  SQL > SHOW DATABASES;
++---------------------+
+| Database            |
++---------------------+
+| first               |
+| information_schema  |
+| mysql               |
+| performance_schema  |
+| university_database |
++---------------------+
+5 rows in set (0.0064 sec)
+ MySQL  localhost:33060+ ssl  SQL > use university_database
+Default schema set to `university_database`.
+Fetching global names, object names from `university_database` for auto-completion... Press ^C to stop.
+ MySQL  localhost:33060+ ssl  university_database  SQL > use university_database;
+Default schema set to `university_database`.
+Fetching global names, object names from `university_database` for auto-completion... Press ^C to stop.
+ MySQL  localhost:33060+ ssl  university_database  SQL > describe university_database;
+ERROR: 1146: Table 'university_database.university_database' doesn't exist
+ MySQL  localhost:33060+ ssl  university_database  SQL > show university_database;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'university_database' at line 1
+ MySQL  localhost:33060+ ssl  university_database  SQL > show tables;
++-------------------------------+
+| Tables_in_university_database |
++-------------------------------+
+| courses                       |
+| enrollments                   |
+| students                      |
+| studentview1                  |
++-------------------------------+
+4 rows in set (0.0030 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > create table course (
+                                                      ->     courseid int primary key,
+                                                      ->     course_name varchar(50),
+                                                      ->     credit int
+                                                      -> );
+Query OK, 0 rows affected (0.0410 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL >
+ MySQL  localhost:33060+ ssl  university_database  SQL > create table enrollments (
+                                                      ->     eid int primary key,
+                                                      ->     eno int,
+                                                      ->     courseid int,
+                                                      ->     year int
+                                                      -> );
+ERROR: 1050: Table 'enrollments' already exists
+ MySQL  localhost:33060+ ssl  university_database  SQL > alter table delete enrollments if exist;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'delete enrollments if exist' at line 1
+ MySQL  localhost:33060+ ssl  university_database  SQL > describe enrollments;
++-----------------+---------+------+-----+---------+----------------+
+| Field           | Type    | Null | Key | Default | Extra          |
++-----------------+---------+------+-----+---------+----------------+
+| enrollment_id   | int     | NO   | PRI | NULL    | auto_increment |
+| student_id      | int     | NO   | MUL | NULL    |                |
+| course_id       | int     | NO   | MUL | NULL    |                |
+| enrollment_date | date    | NO   |     | NULL    |                |
+| grade           | char(2) | YES  |     | NULL    |                |
++-----------------+---------+------+-----+---------+----------------+
+5 rows in set (0.0044 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > drop table enrollments;
+Query OK, 0 rows affected (0.0430 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > create table enrollments (
+                                                      ->                                                       ->     eid int primary key,
+                                                      ->                                                       ->     eno int,
+                                                      ->                                                       ->     courseid int,
+                                                      ->                                                       ->     year int
+                                                      ->                                                       -> );
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '->     eid int primary key,
+                                                    ' at line 2
+ MySQL  localhost:33060+ ssl  university_database  SQL > create table enrollments (
+                                                      ->     eid int primary key,
+                                                      ->     eno int,
+                                                      ->     courseid int,
+                                                      ->     year int
+                                                      -> );
+Query OK, 0 rows affected (0.0278 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > describe enrollments;
++----------+------+------+-----+---------+-------+
+| Field    | Type | Null | Key | Default | Extra |
++----------+------+------+-----+---------+-------+
+| eid      | int  | NO   | PRI | NULL    |       |
+| eno      | int  | YES  |     | NULL    |       |
+| courseid | int  | YES  |     | NULL    |       |
+| year     | int  | YES  |     | NULL    |       |
++----------+------+------+-----+---------+-------+
+4 rows in set (0.0045 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > create view studentview1 as
+                                                      -> select eno, name
+                                                      -> from student;
+ERROR: 1146: Table 'university_database.student' doesn't exist
+ MySQL  localhost:33060+ ssl  university_database  SQL >
+ MySQL  localhost:33060+ ssl  university_database  SQL > describe course;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| courseid    | int         | NO   | PRI | NULL    |       |
+| course_name | varchar(50) | YES  |     | NULL    |       |
+| credit      | int         | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.0042 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > describe studentview1;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| student_id | int         | NO   |     | 0       |       |
+| first_name | varchar(50) | NO   |     | NULL    |       |
+| last_name  | varchar(50) | NO   |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.0030 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > drop courses;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'courses' at line 1
+ MySQL  localhost:33060+ ssl  university_database  SQL > drop courses;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'courses' at line 1
+ MySQL  localhost:33060+ ssl  university_database  SQL > drop table courses;
+Query OK, 0 rows affected (0.0203 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > drop table  enrollments;
+Query OK, 0 rows affected (0.0207 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > drop table student;
+ERROR: 1051: Unknown table 'university_database.student'
+ MySQL  localhost:33060+ ssl  university_database  SQL > drop table studentview1;
+ERROR: 1051: Unknown table 'university_database.studentview1'
+ MySQL  localhost:33060+ ssl  university_database  SQL > drop table studentview1;
+ERROR: 1051: Unknown table 'university_database.studentview1'
+ MySQL  localhost:33060+ ssl  university_database  SQL > create table student (
+                                                      ->     name varchar(50),
+                                                      ->     eno int primary key,
+                                                      ->     dob date,
+                                                      ->     class varchar(20),
+                                                      ->     phone varchar(15),
+                                                      ->     address varchar(100)
+                                                      -> );
+Query OK, 0 rows affected (0.0282 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > describe student;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| name    | varchar(50)  | YES  |     | NULL    |       |
+| eno     | int          | NO   | PRI | NULL    |       |
+| dob     | date         | YES  |     | NULL    |       |
+| class   | varchar(20)  | YES  |     | NULL    |       |
+| phone   | varchar(15)  | YES  |     | NULL    |       |
+| address | varchar(100) | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+6 rows in set (0.0047 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > create table course (
+                                                      ->     courseid int primary key,
+                                                      ->     course_name varchar(50),
+                                                      ->     credit int
+                                                      -> );
+ERROR: 1050: Table 'course' already exists
+ MySQL  localhost:33060+ ssl  university_database  SQL > drop table course;
+Query OK, 0 rows affected (0.0189 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > create table course (
+                                                      ->     courseid int primary key,
+                                                      ->     course_name varchar(50),
+                                                      ->     credit int
+                                                      -> );
+Query OK, 0 rows affected (0.0254 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > describe course;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| courseid    | int         | NO   | PRI | NULL    |       |
+| course_name | varchar(50) | YES  |     | NULL    |       |
+| credit      | int         | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.0038 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > create table student (
+                                                      ->     name varchar(50),
+                                                      ->     eno int primary key,
+                                                      ->     dob date,
+                                                      ->     class varchar(20),
+                                                      ->     phone varchar(15),
+                                                      ->     address varchar(100)
+                                                      -> );
+ERROR: 1050: Table 'student' already exists
+ MySQL  localhost:33060+ ssl  university_database  SQL >
+ MySQL  localhost:33060+ ssl  university_database  SQL > create table course (
+                                                      ->     courseid int primary key,
+                                                      ->     course_name varchar(50),
+                                                      ->     credit int
+                                                      -> );
+ERROR: 1050: Table 'course' already exists
+ MySQL  localhost:33060+ ssl  university_database  SQL >
+ MySQL  localhost:33060+ ssl  university_database  SQL > create table enrollments (
+                                                      ->     eid int primary key,
+                                                      ->     eno int,
+                                                      ->     courseid int,
+                                                      ->     year int
+                                                      -> );
+Query OK, 0 rows affected (0.0273 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > describe enrollments;
++----------+------+------+-----+---------+-------+
+| Field    | Type | Null | Key | Default | Extra |
++----------+------+------+-----+---------+-------+
+| eid      | int  | NO   | PRI | NULL    |       |
+| eno      | int  | YES  |     | NULL    |       |
+| courseid | int  | YES  |     | NULL    |       |
+| year     | int  | YES  |     | NULL    |       |
++----------+------+------+-----+---------+-------+
+4 rows in set (0.0046 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > create view studentview1 as
+                                                      -> select eno, name
+                                                      -> from student;
+ERROR: 1050: Table 'studentview1' already exists
+ MySQL  localhost:33060+ ssl  university_database  SQL > drop studentview1;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'studentview1' at line 1
+ MySQL  localhost:33060+ ssl  university_database  SQL > cretae view stuview1 as
+                                                      -> select eno, name
+                                                      -> from student;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'cretae view stuview1 as
+select eno, name
+from student' at line 1
+ MySQL  localhost:33060+ ssl  university_database  SQL > create view studentview1 as
+                                                      -> select eno, name
+                                                      -> from student;
+ERROR: 1050: Table 'studentview1' already exists
+ MySQL  localhost:33060+ ssl  university_database  SQL > drop table studentview1;
+ERROR: 1051: Unknown table 'university_database.studentview1'
+ MySQL  localhost:33060+ ssl  university_database  SQL > drop view studentview1;
+Query OK, 0 rows affected (0.0084 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > create view studentview1 as
+                                                      -> select eno, name
+                                                      -> from student;
+Query OK, 0 rows affected (0.0085 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > describe studenview1;
+ERROR: 1146: Table 'university_database.studenview1' doesn't exist
+ MySQL  localhost:33060+ ssl  university_database  SQL > insert into studentview1 (eno, name) values (101, 'rahul');
+Query OK, 1 row affected (0.0093 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > update studentview1 set name = 'amit' where eno = 101;
+Query OK, 1 row affected (0.0059 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:33060+ ssl  university_database  SQL > delete from studentview1 where eno = 101;
+Query OK, 1 row affected (0.0043 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select * from studentview1;
+Empty set (0.0011 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > insert into studentview1 (eno, name) values (101, 'rahul');
+Query OK, 1 row affected (0.0052 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select * from studentview1;
++-----+-------+
+| eno | name  |
++-----+-------+
+| 101 | rahul |
++-----+-------+
+1 row in set (0.0014 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > update studentview1 set name = 'amit' where eno = 101;
+Query OK, 1 row affected (0.0035 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:33060+ ssl  university_database  SQL > select * from studentview1;
++-----+------+
+| eno | name |
++-----+------+
+| 101 | amit |
++-----+------+
+1 row in set (0.0011 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > create view env as
+                                                      -> select s.name, c.course_name, e.year
+                                                      -> from student s
+                                                      -> join enrollments e on s.eno = e.eno
+                                                      -> join course c on e.courseid = c.courseid;
+Query OK, 0 rows affected (0.0076 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > select * from env
+                                                      -> ;
+Empty set (0.0020 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > describe env
+                                                      -> ;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| name        | varchar(50) | YES  |     | NULL    |       |
+| course_name | varchar(50) | YES  |     | NULL    |       |
+| year        | int         | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.0040 sec)
+ MySQL  localhost:33060+ ssl  university_database  SQL > ^C
+ MySQL  localhost:33060+ ssl  university_database  SQL >
