@@ -1,26 +1,21 @@
-MySQL Shell 8.0.43
+Microsoft Windows [Version 10.0.26100.6584]
+(c) Microsoft Corporation. All rights reserved.
 
-Copyright (c) 2016, 2025, Oracle and/or its affiliates.
-Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
-Other names may be trademarks of their respective owners.
-
-Type '\help' or '\?' for help; '\quit' to exit.
- MySQL  JS > \connect root@localhost
-Creating a session to 'root@localhost'
-Fetching schema names for auto-completion... Press ^C to stop.
-Your MySQL connection id is 9 (X protocol)
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -h localhost -u root -p
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
 Server version: 8.0.43 MySQL Community Server - GPL
-No default schema selected; type \use <schema> to set one.
- MySQL  localhost:33060+ ssl  JS > show databses;
-Expected ; but found databses (SyntaxError)
- MySQL  localhost:33060+ ssl  JS > show databases;
-Expected ; but found databases (SyntaxError)
- MySQL  localhost:33060+ ssl  JS > show databases;
-Expected ; but found databases (SyntaxError)
- MySQL  localhost:33060+ ssl  JS > \sql
-Switching to SQL mode... Commands end with ;
-Fetching global names for auto-completion... Press ^C to stop.
- MySQL  localhost:33060+ ssl  SQL > SHOW DATABASES;
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
 +---------------------+
 | Database            |
 +---------------------+
@@ -30,158 +25,84 @@ Fetching global names for auto-completion... Press ^C to stop.
 | performance_schema  |
 | university_database |
 +---------------------+
-5 rows in set (0.0014 sec)
- MySQL  localhost:33060+ ssl  SQL > use  university_database;
-Default schema set to `university_database`.
-Fetching global names, object names from `university_database` for auto-completion... Press ^C to stop.
- MySQL  localhost:33060+ ssl  university_database  SQL > select s.name, c.courseid, c.course_name, e.grade
-                                                      -> from student s
-                                                      -> inner join enrollments e on s.eno = e.eno
-                                                      -> inner join course c on e.courseid = c.courseid;
-ERROR: 1054: Unknown column 'e.grade' in 'field list'
- MySQL  localhost:33060+ ssl  university_database  SQL >
- MySQL  localhost:33060+ ssl  university_database  SQL > select s.name, c.course_name, e.year
-                                                      -> from student s
-                                                      -> join enrollments e on s.eno = e.eno
-                                                      -> join course c on e.courseid = c.courseid;
-+-------+----------------------+------+
-| name  | course_name          | year |
-+-------+----------------------+------+
-| amit  | dbms                 | 2024 |
-| amit  | os                   | 2024 |
-| sneha | computer networks    | 2024 |
-| arjun | data structures      | 2023 |
-| kavya | software engineering | 2024 |
-| rohit | computer networks    | 2024 |
-+-------+----------------------+------+
-6 rows in set (0.0013 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select s.name, c.course_name
-                                                      -> from student s
-                                                      -> left join enrollments e on s.eno = e.eno
-                                                      -> left join course c on e.courseid = c.courseid;
-+-------+----------------------+
-| name  | course_name          |
-+-------+----------------------+
-| amit  | dbms                 |
-| amit  | os                   |
-| sneha | computer networks    |
-| arjun | data structures      |
-| kavya | software engineering |
-| rohit | computer networks    |
-+-------+----------------------+
-6 rows in set (0.0010 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select s.class, count(*) as total_students
-                                                      -> from student s
-                                                      -> group by s.class;
-+-------+----------------+
-| class | total_students |
-+-------+----------------+
-| NULL  |              1 |
-| fy    |              1 |
-| sy    |              2 |
-| ty    |              1 |
-+-------+----------------+
-4 rows in set (0.0016 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select s.class, count(*) as total_students
-                                                      -> from student s
-                                                      -> group by s.class;
-+-------+----------------+
-| class | total_students |
-+-------+----------------+
-| NULL  |              1 |
-| fy    |              1 |
-| sy    |              2 |
-| ty    |              1 |
-+-------+----------------+
-4 rows in set (0.0011 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select s.name, e.year
-                                                      -> from student s
-                                                      -> inner join enrollments e on s.eno = e.eno
-                                                      -> where e.year = 2024;
-+-------+------+
-| name  | year |
-+-------+------+
-| amit  | 2024 |
-| amit  | 2024 |
-| sneha | 2024 |
-| kavya | 2024 |
-| rohit | 2024 |
-+-------+------+
-5 rows in set (0.0019 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select name from student
-                                                      -> union
-                                                      -> select course_name from course;
-+----------------------+
-| name                 |
-+----------------------+
-| amit                 |
-| sneha                |
-| arjun                |
-| kavya                |
-| rohit                |
-| computer networks    |
-| data structures      |
-| dbms                 |
-| os                   |
-| software engineering |
-| toc                  |
-+----------------------+
-11 rows in set (0.0013 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select name from student
-                                                      -> union all
-                                                      -> select course_name from course;
-+----------------------+
-| name                 |
-+----------------------+
-| amit                 |
-| sneha                |
-| arjun                |
-| kavya                |
-| rohit                |
-| computer networks    |
-| data structures      |
-| dbms                 |
-| os                   |
-| software engineering |
-| toc                  |
-+----------------------+
-11 rows in set (0.0009 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select s.name, c.course_name
-                                                      -> from student s
-                                                      -> cross join course c;
-+-------+----------------------+
-| name  | course_name          |
-+-------+----------------------+
-| rohit | computer networks    |
-| kavya | computer networks    |
-| arjun | computer networks    |
-| sneha | computer networks    |
-| amit  | computer networks    |
-| rohit | data structures      |
-| kavya | data structures      |
-| arjun | data structures      |
-| sneha | data structures      |
-| amit  | data structures      |
-| rohit | dbms                 |
-| kavya | dbms                 |
-| arjun | dbms                 |
-| sneha | dbms                 |
-| amit  | dbms                 |
-| rohit | os                   |
-| kavya | os                   |
-| arjun | os                   |
-| sneha | os                   |
-| amit  | os                   |
-| rohit | software engineering |
-| kavya | software engineering |
-| arjun | software engineering |
-| sneha | software engineering |
-| amit  | software engineering |
-| rohit | toc                  |
-| kavya | toc                  |
-| arjun | toc                  |
-| sneha | toc                  |
-| amit  | toc                  |
-+-------+----------------------+
-30 rows in set (0.0009 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL >
+5 rows in set (0.04 sec)
+
+mysql> create database university;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use university;
+Database changed
+mysql> create table student (student_id int primary key, name varchar(50), major varchar(50), cgpa decimal(3,2));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table course (course_id int primary key, course_code varchar(10), course_name varchar(100), credits int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table enrollment (enrollment_id int primary key, student_id int, course_id int, grade char(2), foreign key (student_id) references student(student_id), foreign key (course_id) references course(course_id));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into student values (1, 'alice', 'computer science', 3.8), (2, 'bob', 'mathematics', 3.2), (3, 'carol', 'physics', 3.9), (4, 'david', 'computer science', 3.5), (5, 'emma', 'mathematics', 3.7);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> insert into course values (101, 'cs101', 'intro to programming', 4), (102, 'cs102', 'data structures', 3), (201, 'ma201', 'calculus', 4), (202, 'ma202', 'linear algebra', 3), (301, 'ph301', 'quantum physics', 4);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> insert into enrollment values (1, 1, 101, 'a'), (2, 1, 102, 'b'), (3, 2, 201, 'b'), (4, 4, 101, 'c'), (5, 5, 202, 'a'), (6, 3, 301, 'a');
+Query OK, 6 rows affected (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select s.name, c.course_code, c.course_name, e.grade from student s inner join enrollment e on s.student_id = e.student_id inner join course c on e.course_id = c.course_id;
++-------+-------------+----------------------+-------+
+| name  | course_code | course_name          | grade |
++-------+-------------+----------------------+-------+
+| alice | cs101       | intro to programming | a     |
+| alice | cs102       | data structures      | b     |
+| bob   | ma201       | calculus             | b     |
+| carol | ph301       | quantum physics      | a     |
+| david | cs101       | intro to programming | c     |
+| emma  | ma202       | linear algebra       | a     |
++-------+-------------+----------------------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select s.name, c.course_code, c.course_name, e.grade from student s left join enrollment e on s.student_id = e.student_id left join course c on e.course_id = c.course_id;
++-------+-------------+----------------------+-------+
+| name  | course_code | course_name          | grade |
++-------+-------------+----------------------+-------+
+| alice | cs101       | intro to programming | a     |
+| alice | cs102       | data structures      | b     |
+| bob   | ma201       | calculus             | b     |
+| carol | ph301       | quantum physics      | a     |
+| david | cs101       | intro to programming | c     |
+| emma  | ma202       | linear algebra       | a     |
++-------+-------------+----------------------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select s.name, c.course_code, c.course_name, e.grade from student s right join enrollment e on s.student_id = e.student_id right join course c on e.course_id = c.course_id;
++-------+-------------+----------------------+-------+
+| name  | course_code | course_name          | grade |
++-------+-------------+----------------------+-------+
+| alice | cs101       | intro to programming | a     |
+| david | cs101       | intro to programming | c     |
+| alice | cs102       | data structures      | b     |
+| bob   | ma201       | calculus             | b     |
+| emma  | ma202       | linear algebra       | a     |
+| carol | ph301       | quantum physics      | a     |
++-------+-------------+----------------------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select s.name, c.course_code, c.course_name, e.grade from student s left join enrollment e on s.student_id = e.student_id left join course c on e.course_id = c.course_id union select s.name, c.course_code, c.course_name, e.grade from student s right join enrollment e on s.student_id = e.student_id right join course c on e.course_id = c.course_id;
++-------+-------------+----------------------+-------+
+| name  | course_code | course_name          | grade |
++-------+-------------+----------------------+-------+
+| alice | cs101       | intro to programming | a     |
+| alice | cs102       | data structures      | b     |
+| bob   | ma201       | calculus             | b     |
+| carol | ph301       | quantum physics      | a     |
+| david | cs101       | intro to programming | c     |
+| emma  | ma202       | linear algebra       | a     |
++-------+-------------+----------------------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select s.name, s.major, sum(c.credits) as total_credits, round(avg(case e.grade when 'a' then 4.0 when 'b' then 3.0 when 'c' then 2.0 when 'd' then 1.0 when 'f' then 0.0 end),2) as avg_gpa from student s left join enrollment e on s.student_id = e.student_id left join course c on e.course_id = c.course_id group by s.name, s.major;
