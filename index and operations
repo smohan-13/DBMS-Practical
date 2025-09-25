@@ -1,217 +1,124 @@
-Query OK, 0 rows affected (0.0010 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student where class = 'ty';
-Empty set (0.0022 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL >
- MySQL  localhost:33060+ ssl  university_database  SQL > -- find students born after 2000 (greater than operator)
-Query OK, 0 rows affected (0.0010 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student where dob > '2000-01-01';
-Empty set (0.0033 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL >
- MySQL  localhost:33060+ ssl  university_database  SQL > -- find students not in 'sy' (not equal operator)
-Query OK, 0 rows affected (0.0010 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student where class <> 'sy';
-Empty set (0.0013 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student where class = 'ty';
-Empty set (0.0010 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student where dob > '2000-01-01';
-Empty set (0.0014 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > -- student table
-Query OK, 0 rows affected (0.0010 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > insert into student (name, eno, dob, class, phone, address) values
-                                                      -> ('rahul', 101, '2002-05-10', 'sy', '9876543210', 'pune'),
-                                                      -> ('amit', 102, '2001-08-21', 'ty', '9123456780', 'mumbai'),
-                                                      -> ('priya', 103, '2003-01-15', 'sy', '9988776655', 'pune'),
-                                                      -> ('neha', 104, '2000-12-05', 'fy', '9012345678', 'nagpur');
-ERROR: 1062: Duplicate entry '101' for key 'student.PRIMARY'
- MySQL  localhost:33060+ ssl  university_database  SQL >
- MySQL  localhost:33060+ ssl  university_database  SQL > -- course table
-Query OK, 0 rows affected (0.0007 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > insert into course (courseid, course_name, credit) values
-                                                      -> (1, 'dbms', 4),
-                                                      -> (2, 'os', 3),
-                                                      -> (3, 'toc', 4);
-Query OK, 3 rows affected (0.0055 sec)
+C:\Program Files\MySQL\MySQL Server 8.0\bin>"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -h localhost -u root -p
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.43 MySQL Community Server - GPL
 
-Records: 3  Duplicates: 0  Warnings: 0
- MySQL  localhost:33060+ ssl  university_database  SQL >
- MySQL  localhost:33060+ ssl  university_database  SQL > -- enrollments table
-Query OK, 0 rows affected (0.0008 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > insert into enrollments (eid, eno, courseid, year) values
-                                                      -> (1, 101, 1, 2024),
-                                                      -> (2, 101, 2, 2024),
-                                                      -> (3, 102, 1, 2023),
-                                                      -> (4, 103, 3, 2024);
-Query OK, 4 rows affected (0.0037 sec)
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
 
-Records: 4  Duplicates: 0  Warnings: 0
- MySQL  localhost:33060+ ssl  university_database  SQL > select
-                                                      -> * from student;
-+------+-----+------+-------+-------+---------+
-| name | eno | dob  | class | phone | address |
-+------+-----+------+-------+-------+---------+
-| amit | 101 | NULL | NULL  | NULL  | NULL    |
-+------+-----+------+-------+-------+---------+
-1 row in set (0.0014 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student;
-+------+-----+------+-------+-------+---------+
-| name | eno | dob  | class | phone | address |
-+------+-----+------+-------+-------+---------+
-| amit | 101 | NULL | NULL  | NULL  | NULL    |
-+------+-----+------+-------+-------+---------+
-1 row in set (0.0011 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > -- student table
-Query OK, 0 rows affected (0.0009 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > insert into student (name, eno, dob, class, phone, address) values
-                                                      -> ('sneha', 201, '2001-03-12', 'fy', '9812345670', 'pune'),
-                                                      -> ('arjun', 202, '2000-11-25', 'sy', '9823456711', 'mumbai'),
-                                                      -> ('kavya', 203, '2002-07-18', 'ty', '9834567822', 'nagpur'),
-                                                      -> ('rohit', 204, '2003-09-05', 'sy', '9845678933', 'nashik');
-Query OK, 4 rows affected (0.0042 sec)
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
 
-Records: 4  Duplicates: 0  Warnings: 0
- MySQL  localhost:33060+ ssl  university_database  SQL >
- MySQL  localhost:33060+ ssl  university_database  SQL > -- course table
-Query OK, 0 rows affected (0.0009 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > insert into course (courseid, course_name, credit) values
-                                                      -> (11, 'computer networks', 4),
-                                                      -> (12, 'data structures', 3),
-                                                      -> (13, 'software engineering', 4);
-Query OK, 3 rows affected (0.0040 sec)
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> use college_info;
+Database changed
 
-Records: 3  Duplicates: 0  Warnings: 0
- MySQL  localhost:33060+ ssl  university_database  SQL >
- MySQL  localhost:33060+ ssl  university_database  SQL > -- enrollments table
-Query OK, 0 rows affected (0.0009 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > insert into enrollments (eid, eno, courseid, year) values
-                                                      -> (21, 201, 11, 2024),
-                                                      -> (22, 202, 12, 2023),
-                                                      -> (23, 203, 13, 2024),
-                                                      -> (24, 204, 11, 2024);
-Query OK, 4 rows affected (0.0046 sec)
+mysql> delete from enrollments;
+Query OK, 5 rows affected (0.01 sec)
 
-Records: 4  Duplicates: 0  Warnings: 0
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student;
-+-------+-----+------------+-------+------------+---------+
-| name  | eno | dob        | class | phone      | address |
-+-------+-----+------------+-------+------------+---------+
-| amit  | 101 | NULL       | NULL  | NULL       | NULL    |
-| sneha | 201 | 2001-03-12 | fy    | 9812345670 | pune    |
-| arjun | 202 | 2000-11-25 | sy    | 9823456711 | mumbai  |
-| kavya | 203 | 2002-07-18 | ty    | 9834567822 | nagpur  |
-| rohit | 204 | 2003-09-05 | sy    | 9845678933 | nashik  |
-+-------+-----+------------+-------+------------+---------+
-5 rows in set (0.0013 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student where class = 'sy';
-+-------+-----+------------+-------+------------+---------+
-| name  | eno | dob        | class | phone      | address |
-+-------+-----+------------+-------+------------+---------+
-| arjun | 202 | 2000-11-25 | sy    | 9823456711 | mumbai  |
-| rohit | 204 | 2003-09-05 | sy    | 9845678933 | nashik  |
-+-------+-----+------------+-------+------------+---------+
-2 rows in set (0.0020 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student where dob > '2002-01-01';
-+-------+-----+------------+-------+------------+---------+
-| name  | eno | dob        | class | phone      | address |
-+-------+-----+------------+-------+------------+---------+
-| kavya | 203 | 2002-07-18 | ty    | 9834567822 | nagpur  |
-| rohit | 204 | 2003-09-05 | sy    | 9845678933 | nashik  |
-+-------+-----+------------+-------+------------+---------+
-2 rows in set (0.0016 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student where address <> 'pune';
-+-------+-----+------------+-------+------------+---------+
-| name  | eno | dob        | class | phone      | address |
-+-------+-----+------------+-------+------------+---------+
-| arjun | 202 | 2000-11-25 | sy    | 9823456711 | mumbai  |
-| kavya | 203 | 2002-07-18 | ty    | 9834567822 | nagpur  |
-| rohit | 204 | 2003-09-05 | sy    | 9845678933 | nashik  |
-+-------+-----+------------+-------+------------+---------+
-3 rows in set (0.0015 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student where class = 'sy' and address = 'nashik';
-+-------+-----+------------+-------+------------+---------+
-| name  | eno | dob        | class | phone      | address |
-+-------+-----+------------+-------+------------+---------+
-| rohit | 204 | 2003-09-05 | sy    | 9845678933 | nashik  |
-+-------+-----+------------+-------+------------+---------+
-1 row in set (0.0015 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student where class = 'fy' or class = 'ty';
-+-------+-----+------------+-------+------------+---------+
-| name  | eno | dob        | class | phone      | address |
-+-------+-----+------------+-------+------------+---------+
-| sneha | 201 | 2001-03-12 | fy    | 9812345670 | pune    |
-| kavya | 203 | 2002-07-18 | ty    | 9834567822 | nagpur  |
-+-------+-----+------------+-------+------------+---------+
-2 rows in set (0.0014 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student where name like 'a%';
-+-------+-----+------------+-------+------------+---------+
-| name  | eno | dob        | class | phone      | address |
-+-------+-----+------------+-------+------------+---------+
-| amit  | 101 | NULL       | NULL  | NULL       | NULL    |
-| arjun | 202 | 2000-11-25 | sy    | 9823456711 | mumbai  |
-+-------+-----+------------+-------+------------+---------+
-2 rows in set (0.0013 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student where address in ('pune', 'nagpur');
-+-------+-----+------------+-------+------------+---------+
-| name  | eno | dob        | class | phone      | address |
-+-------+-----+------------+-------+------------+---------+
-| sneha | 201 | 2001-03-12 | fy    | 9812345670 | pune    |
-| kavya | 203 | 2002-07-18 | ty    | 9834567822 | nagpur  |
-+-------+-----+------------+-------+------------+---------+
-2 rows in set (0.0015 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > select * from student where dob between '2001-01-01' and '2003-12-31';
-+-------+-----+------------+-------+------------+---------+
-| name  | eno | dob        | class | phone      | address |
-+-------+-----+------------+-------+------------+---------+
-| sneha | 201 | 2001-03-12 | fy    | 9812345670 | pune    |
-| kavya | 203 | 2002-07-18 | ty    | 9834567822 | nagpur  |
-| rohit | 204 | 2003-09-05 | sy    | 9845678933 | nashik  |
-+-------+-----+------------+-------+------------+---------+
-3 rows in set (0.0017 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > create index idx_student_eno on student(eno);
-Query OK, 0 rows affected (0.0492 sec)
+mysql> delete from course;
+Query OK, 5 rows affected (0.00 sec)
 
+mysql> delete from student;
+Query OK, 5 rows affected (0.00 sec)
+
+mysql>
+mysql> insert into student (eno, name) values (1, 'arjun'), (2, 'neha'), (3, 'rahul'), (4, 'priya'), (5, 'vikram'), (6, 'anita'), (7, 'deepak'), (8, 'rani'), (9, 'sameer'), (10, 'isha');
+Query OK, 10 rows affected (0.00 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> insert into course (courseid, course_name, credit) values (101, 'mathematics', 4), (102, 'physics', 3), (103, 'chemistry', 3), (104, 'computer science', 4), (105, 'english', 2), (106, 'history', 3), (107, 'geography', 3), (108, 'economics', 3), (109, 'biology', 4), (110, 'philosophy', 2);
+Query OK, 10 rows affected (0.00 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> insert into enrollments (eid, eno, courseid, year) values (1, 1, 101, 2024), (2, 2, 102, 2024), (3, 3, 103, 2025), (4, 4, 104, 2025), (5, 5, 105, 2024), (6, 6, 106, 2023), (7, 7, 107, 2023), (8, 8, 108, 2024), (9, 9, 109, 2025), (10, 10, 110, 2024);
+Query OK, 10 rows affected (0.00 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from student where name like 'a%';
++-----+-------+
+| eno | name  |
++-----+-------+
+|   1 | arjun |
+|   6 | anita |
++-----+-------+
+2 rows in set (0.00 sec)
+
+mysql>
+mysql> select * from enrollments where year >= 2024 and courseid in (101, 102, 103);
++-----+------+----------+------+
+| eid | eno  | courseid | year |
++-----+------+----------+------+
+|   1 |    1 |      101 | 2024 |
+|   2 |    2 |      102 | 2024 |
+|   3 |    3 |      103 | 2025 |
++-----+------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql>
+mysql> select * from course where credit > 3 or course_name = 'english';
++----------+------------------+--------+
+| courseid | course_name      | credit |
++----------+------------------+--------+
+|      101 | mathematics      |      4 |
+|      104 | computer science |      4 |
+|      105 | english          |      2 |
+|      109 | biology          |      4 |
++----------+------------------+--------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> select * from enrollments where eno = 5 or eno = 7;
++-----+------+----------+------+
+| eid | eno  | courseid | year |
++-----+------+----------+------+
+|   5 |    5 |      105 | 2024 |
+|   7 |    7 |      107 | 2023 |
++-----+------+----------+------+
+2 rows in set (0.00 sec)
+
+mysql> create index idx_student_name on student(name);
+Query OK, 0 rows affected (0.05 sec)
 Records: 0  Duplicates: 0  Warnings: 0
- MySQL  localhost:33060+ ssl  university_database  SQL > show index;
-ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
- MySQL  localhost:33060+ ssl  university_database  SQL > select index from idx_student_eno;
-ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'index from idx_student_eno' at line 1
- MySQL  localhost:33060+ ssl  university_database  SQL > create index idx_course_name on course(course_name);
-Query OK, 0 rows affected (0.0378 sec)
 
+mysql>
+mysql> create index idx_enroll_year on enrollments(year);
+Query OK, 0 rows affected (0.04 sec)
 Records: 0  Duplicates: 0  Warnings: 0
- MySQL  localhost:33060+ ssl  university_database  SQL > create index idx_enrollments_student_course on enrollments(eno, courseid);
-Query OK, 0 rows affected (0.0401 sec)
 
+mysql>
+mysql> create index idx_enroll_eno_courseid on enrollments(eno, courseid);
+Query OK, 0 rows affected (0.05 sec)
 Records: 0  Duplicates: 0  Warnings: 0
- MySQL  localhost:33060+ ssl  university_database  SQL > show indexes from student;
-+---------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
-| Table   | Non_unique | Key_name        | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
-+---------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
-| student |          0 | PRIMARY         |            1 | eno         | A         |           5 |     NULL | NULL   |      | BTREE      |         |
-      | YES     | NULL       |
-| student |          1 | idx_student_eno |            1 | eno         | A         |           5 |     NULL | NULL   |      | BTREE      |         |
-      | YES     | NULL       |
-+---------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
-2 rows in set (0.0085 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > show indexes from course;
-+--------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
-| Table  | Non_unique | Key_name        | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
-+--------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
-| course |          0 | PRIMARY         |            1 | courseid    | A         |           6 |     NULL | NULL   |      | BTREE      |         |
-     | YES     | NULL       |
-| course |          1 | idx_course_name |            1 | course_name | A         |           6 |     NULL | NULL   | YES  | BTREE      |         |
-     | YES     | NULL       |
-+--------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
-2 rows in set (0.0063 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > show indexes from enrollments;
-+-------------+------------+--------------------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
-| Table       | Non_unique | Key_name                       | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
-+-------------+------------+--------------------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
-| enrollments |          0 | PRIMARY                        |            1 | eid         | A         |           8 |     NULL | NULL   |      | BTREE      |         |               | YES     | NULL       |
-| enrollments |          1 | idx_enrollments_student_course |            1 | eno         | A         |           7 |     NULL | NULL   | YES  | BTREE      |         |               | YES     | NULL       |
-| enrollments |          1 | idx_enrollments_student_course |            2 | courseid    | A         |           8 |     NULL | NULL   | YES  | BTREE      |         |               | YES     | NULL       |
-+-------------+------------+--------------------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
-3 rows in set (0.0081 sec)
- MySQL  localhost:33060+ ssl  university_database  SQL > drop index idx_student_eno on student;
-Query OK, 0 rows affected (0.0162 sec)
 
-Records: 0  Duplicates: 0  Warnings: 0
+mysql> show index from student;
++---------+------------+------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table   | Non_unique | Key_name         | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++---------+------------+------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| student |          0 | PRIMARY          |            1 | eno         | A         |          10 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| student |          1 | idx_student_name |            1 | name        | A         |          10 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++---------+------------+------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+2 rows in set (0.02 sec)
+
+mysql> show index from course;
++--------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table  | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++--------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| course |          0 | PRIMARY  |            1 | courseid    | A         |          10 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
++--------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+1 row in set (0.01 sec)
+
+mysql> show index from enrollments;
++-------------+------------+-------------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table       | Non_unique | Key_name                | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++-------------+------------+-------------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| enrollments |          0 | PRIMARY                 |            1 | eid         | A         |          10 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| enrollments |          1 | courseid                |            1 | courseid    | A         |          10 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
+| enrollments |          1 | idx_enroll_year         |            1 | year        | A         |           3 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
+| enrollments |          1 | idx_enroll_eno_courseid |            1 | eno         | A         |          10 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
+| enrollments |          1 | idx_enroll_eno_courseid |            2 | courseid    | A         |          10 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++-------------+------------+-------------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+5 rows in set (0.01 sec)
