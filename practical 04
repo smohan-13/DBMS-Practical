@@ -1,0 +1,96 @@
+declare
+sid number := &student_id;
+book varchar2(100) := '&book_title';
+issued_date date;
+duration number;
+penalty number := 0;
+begin
+select issued_on into issued_date
+from library_users
+where student_id = sid and book_title = book and return_status = 'i';
+duration := trunc(sysdate - issued_date);
+if duration <= 10 then
+dbms_output.put_line('no fine applicable');
+elsif duration <= 25 then
+penalty := duration * 4;
+else
+penalty := duration * 40;
+end if;
+update library_users set return_status = 'r' where student_id = sid and book_title = book;
+if penalty > 0 then
+insert into penalties (student_id, penalty_date, amount) values (sid, sysdate, penalty);
+dbms_output.put_line('penalty amount: ' || penalty);
+end if;
+exception
+when no_data_found then
+dbms_output.put_line('no such active issue found');
+when others then
+dbms_output.put_line('unexpected error: ' || sqlerrm);
+end;
+/
+
+SQL*Plus: Release 21.0.0.0.0 - Production on Fri Sep 26 12:28:50 2025
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle.  All rights reserved.
+
+Enter user-name: system
+Enter password:
+Last Successful login time: Fri Sep 26 2025 12:22:08 +05:30
+
+Connected to:
+Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production
+Version 21.3.0.0.0
+
+SQL> show databases;
+SP2-0158: unknown SHOW option "databases"
+SQL> set serveroutput on
+SQL> create table library_users (
+  2    student_id number,
+  3    book_title varchar2(100),
+  4    issued_on date,
+  5    return_status char(1)
+  6  );
+
+Table created.
+
+SQL>
+SQL> create table penalties (
+  2    student_id number,
+  3    penalty_date date,
+  4    amount number
+  5  );
+
+Table created.
+
+SQL>
+SQL> insert into library_users values (101, 'computer networks', sysdate - 8, 'i');
+
+1 row created.
+
+SQL> insert into library_users values (102, 'software engineering', sysdate - 18, 'i');
+
+1 row created.
+
+SQL> insert into library_users values (103, 'compiler design', sysdate - 32, 'i');
+
+1 row created.
+
+SQL> insert into library_users values (104, 'machine learning', sysdate - 3, 'r');
+
+1 row created.
+
+SQL> @C:\Users\gaval\Desktop\dbms practical\library.sql
+SP2-0310: unable to open file "C:\Users\gaval\Desktop\dbms.sql"
+SQL> @C:\Users\gaval\Desktop\dbms practical\library.sql
+SP2-0310: unable to open file "C:\Users\gaval\Desktop\dbms.sql"
+SQL> @C:\Users\gaval\Desktop\dbms_practical\library.sql
+Enter value for student_id: 142
+old   2: sid number := &student_id;
+new   2: sid number := 142;
+Enter value for book_title: harry potter
+old   3: book varchar2(100) := '&book_title';
+new   3: book varchar2(100) := 'harry potter';
+no such active issue found
+
+PL/SQL procedure successfully completed.
