@@ -1,4 +1,4 @@
-C:\Program Files\MySQL\MySQL Server 8.0\bin>"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -h localhost -u root -p
+C:\Program Files\MySQL\MySQL Router 8.0\bin>"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p
 Enter password: *********
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 8
@@ -11,61 +11,139 @@ affiliates. Other names may be trademarks of their respective
 owners.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
 mysql> show databases;
 +---------------------+
 | Database            |
 +---------------------+
+| college_info        |
 | first               |
 | information_schema  |
 | mysql               |
 | performance_schema  |
+| rushi               |
 | university          |
 | university_database |
 +---------------------+
-mysql> create table students (
-    ->     student_id int auto_increment primary key,
-    ->     first_name varchar(50) not null,
-    ->     last_name varchar(50) not null,
-    ->     email varchar(100) not null unique,
-    ->     date_of_birth date not null,
-    ->     enrollment_date date not null default (curdate())
-    -> );
-Query OK, 0 rows affected (0.04 sec)
+8 rows in set (0.03 sec)
 
-mysql> create table courses (
-    ->     course_id int auto_increment primary key,
-    ->     course_name varchar(100) not null,
-    ->     course_code varchar(10) not null unique,
-    ->     credits int not null check (credits > 0)
-    -> );
+mysql> use university
+Database changed
+mysql> drop all tables;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'all tables' at line 1
+mysql> show tables;
++----------------------+
+| Tables_in_university |
++----------------------+
+| backlib              |
+| course               |
+| courses              |
+| enrollment           |
+| enrollments          |
+| env                  |
+| library              |
+| student              |
+| students             |
+| studentview1         |
++----------------------+
+10 rows in set (0.01 sec)
+
+mysql> drop table student;
+ERROR 3730 (HY000): Cannot drop table 'student' referenced by a foreign key constraint 'enrollments_ibfk_1' on table 'enrollments'.
+mysql> drop table if exists enrollments;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql>
+mysql> drop table if exists courses;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> drop table if exists students;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table students (student_id int primary key, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) unique not null, gender char(1) check (gender in ('m','f')), date_of_birth date not null, city varchar(50) default 'delhi');
 Query OK, 0 rows affected (0.03 sec)
 
-mysql> create table enrollments (
-    ->     enrollment_id int auto_increment primary key,
-    ->     student_id int not null,
-    ->     course_id int not null,
-    ->     enrollment_date date not null default (curdate()),
-    ->     grade varchar(2),
-    ->     foreign key (student_id) references students(student_id) on delete cascade,
-    ->     foreign key (course_id) references courses(course_id) on delete cascade,
-    ->     unique (student_id, course_id)
-    -> );
-Query OK, 0 rows affected (0.04 sec)
-mysql> insert into students (first_name, last_name, email, date_of_birth, enrollment_date) values
-    -> ('rahul', 'singh', 'rahul.singh@example.com', '2000-02-15', curdate()),
-    -> ('anita', 'patel', 'anita.patel@example.com', '1999-08-20', curdate()),
-    -> ('vijay', 'kumar', 'vijay.kumar@example.com', '2001-12-05', curdate()),
-    -> ('priya', 'sharma', 'priya.sharma@example.com', '2000-06-30', curdate());
-Query OK, 4 rows affected (0.01 sec)
-Records: 4  Duplicates: 0  Warnings: 0
+mysql>
+mysql> create table courses (course_id int primary key, course_name varchar(100) not null unique, department varchar(50) not null, credits int not null check (credits > 0));
+Query OK, 0 rows affected (0.03 sec)
 
-mysql> select * from students where email like '%@example.com';
-+------------+------------+-----------+--------------------------+---------------+-----------------+
-| student_id | first_name | last_name | email                    | date_of_birth | enrollment_date |
-+------------+------------+-----------+--------------------------+---------------+-----------------+
-|          1 | rahul      | singh     | rahul.singh@example.com  | 2000-02-15    | 2025-09-26      |
-|          2 | anita      | patel     | anita.patel@example.com  | 1999-08-20    | 2025-09-26      |
-|          3 | vijay      | kumar     | vijay.kumar@example.com  | 2001-12-05    | 2025-09-26      |
-|          4 | priya      | sharma    | priya.sharma@example.com | 2000-06-30    | 2025-09-26      |
-+------------+------------+-----------+--------------------------+---------------+-----------------+
-4 rows in set (0.00 sec)
+mysql>
+mysql> create table enrollments (enrollment_id int primary key, student_id int not null, course_id int not null, enrollment_date date default current_date, grade char(2), foreign key (student_id) references students(student_id), foreign key (course_id) references courses(course_id));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'current_date, grade char(2), foreign key (student_id) references students(studen' at line 1
+mysql> create table enrollments (enrollment_id int primary key, student_id int not null, course_id int not null, enrollment_date date default current_date, grade char(2), foreign key (student_id) references students(student_id), foreign key (course_id) references courses(course_id));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'current_date, grade char(2), foreign key (student_id) references students(studen' at line 1
+mysql> create table enrollments (enrollment_id int primary key, student_id int not null, course_id int not null, enrollment_date date not null, grade char(2), foreign key (student_id) references students(student_id), foreign key (course_id) references courses(course_id));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into students (student_id, first_name, last_name, email, gender, date_of_birth, city) values (1, 'rahul', 'sharma', 'rahul.sharma@example.com', 'm', '2000-05-15', 'mumbai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> insert into students (student_id, first_name, last_name, email, gender, date_of_birth, city) values (2, 'priya', 'verma', 'priya.verma@example.com', 'f', '2001-08-22', 'delhi');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> insert into students (student_id, first_name, last_name, email, gender, date_of_birth, city) values (3, 'amit', 'patel', 'amit.patel@example.com', 'm', '1999-12-10', 'ahmedabad');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++------+--------------+------------+
+| enno | name         | dob        |
++------+--------------+------------+
+|    1 | rahul sharma | 2002-05-14 |
+|    2 | anita sharma | 2001-08-22 |
+|    4 | neha verma   | 2002-11-30 |
+|    5 | amit kumar   | 2000-01-01 |
+|    6 | amit kumar   | 2001-07-15 |
++------+--------------+------------+
+5 rows in set (0.00 sec)
+
+mysql>
+mysql> insert into courses (course_id, course_name, department, credits) values (101, 'data structures', 'computer science', 4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> insert into courses (course_id, course_name, department, credits) values (102, 'microeconomics', 'economics', 3);
+
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> insert into courses (course_id, course_name, department, credits) values (103, 'organic chemistry', 'chemistry', 4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from courses;;
++-----------+-------------------+------------------+---------+
+| course_id | course_name       | department       | credits |
++-----------+-------------------+------------------+---------+
+|       101 | data structures   | computer science |       4 |
+|       102 | microeconomics    | economics        |       3 |
+|       103 | organic chemistry | chemistry        |       4 |
++-----------+-------------------+------------------+---------+
+3 rows in set (0.00 sec)
+
+ERROR:
+No query specified
+
+mysql> insert into enrollments (enrollment_id, student_id, course_id, enrollment_date, grade) values (1, 1, 101, '2025-07-01', 'a');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> insert into enrollments (enrollment_id, student_id, course_id, enrollment_date, grade) values (2, 2, 102, '2025-07-02', 'b');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> insert into enrollments (enrollment_id, student_id, course_id, enrollment_date, grade) values (3, 3, 103, '2025-07-03', 'a');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from enrollments;
++---------------+------------+-----------+-----------------+-------+
+| enrollment_id | student_id | course_id | enrollment_date | grade |
++---------------+------------+-----------+-----------------+-------+
+|             1 |          1 |       101 | 2025-07-01      | a     |
+|             2 |          2 |       102 | 2025-07-02      | b     |
+|             3 |          3 |       103 | 2025-07-03      | a     |
++---------------+------------+-----------+-----------------+-------+
+3 rows in set (0.00 sec)
+
+mysql>
