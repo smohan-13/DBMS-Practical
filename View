@@ -1,76 +1,181 @@
-mysql> create database college_info;
-Query OK, 1 row affected (0.01 sec)
+Microsoft Windows [Version 10.0.26100.6584]
+(c) Microsoft Corporation. All rights reserved.
 
-mysql> use  college_info;
+C:\Program Files\MySQL\MySQL Router 8.0\bin>"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 8.0.43 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use university;
 Database changed
-mysql> create table student (eno int primary key, name varchar(100));
-Query OK, 0 rows affected (0.03 sec)
+mysql> show tables;
++----------------------+
+| Tables_in_university |
++----------------------+
+| backlib              |
+| course               |
+| courses              |
+| enrollment           |
+| enrollments          |
+| env                  |
+| learner_view         |
+| learners             |
+| library              |
+| registrations        |
+| student              |
+| students             |
+| studentview1         |
+| subjects             |
++----------------------+
+14 rows in set (0.01 sec)
 
-mysql> insert into student (eno, name) values (1, 'arjun'), (2, 'neha'), (3, 'rahul'), (4, 'priya'), (5, 'vikram');
-Query OK, 5 rows affected (0.01 sec)
-Records: 5  Duplicates: 0  Warnings: 0
-
-mysql> create table course (courseid int primary key, course_name varchar(100), credit int);
-Query OK, 0 rows affected (0.03 sec)
-
-mysql> insert into course (courseid, course_name, credit) values (101, 'mathematics', 4), (102, 'physics', 3), (103, 'chemistry', 3), (104, 'computer science', 4), (105, 'english', 2);
-Query OK, 5 rows affected (0.01 sec)
-Records: 5  Duplicates: 0  Warnings: 0
-
-mysql> create table enrollments (eid int primary key, eno int, courseid int, year int, foreign key (eno) references student(eno), foreign key (courseid) references course(courseid));
+mysql> drop table if exsit student;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'exsit student' at line 1
+mysql> drop table if exists enrollments;
 Query OK, 0 rows affected (0.04 sec)
 
-mysql> insert into enrollments (eid, eno, courseid, year) values (1, 1, 101, 2024), (2, 2, 102, 2024), (3, 3, 103, 2025), (4, 4, 104, 2025), (5, 5, 105, 2024);
-Query OK, 5 rows affected (0.01 sec)
-Records: 5  Duplicates: 0  Warnings: 0
+mysql> drop table if exists course;
+Query OK, 0 rows affected (0.02 sec)
 
-mysql> create view studentview1 as select eno, name from student;
-Query OK, 0 rows affected (0.01 sec)
+mysql> drop table if exists student;
+Query OK, 0 rows affected (0.02 sec)
 
-mysql> create view studentview1 as select eno, name from student;
+mysql> create table course(courseid int primary key, course_name varchar(100) not null, credit int not null);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table student(enno int primary key, name varchar(100) not null);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table enrollments(eid int primary key, eno int not null, courseid int not null, year int not null, foreign key(eno) references student(enno), foreign key(courseid) references course(courseid));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create view studentview1 as select enno, name from student;
 ERROR 1050 (42S01): Table 'studentview1' already exists
-mysql>
-mysql> insert into studentview1 (eno, name) values (6, 'arjun');
-Query OK, 1 row affected (0.01 sec)
-
-mysql>
-mysql> update studentview1 set name = 'rahul' where eno = 6;
-Query OK, 1 row affected (0.01 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-
-mysql>
-mysql> delete from studentview1 where eno = 6;
+mysql> insert into course (courseid, course_name, credit) values (101, 'data structures', 4);
 Query OK, 1 row affected (0.00 sec)
 
-mysql>
-mysql> select * from studentview1;
-+-----+--------+
-| eno | name   |
-+-----+--------+
-|   1 | arjun  |
-|   2 | neha   |
-|   3 | rahul  |
-|   4 | priya  |
-|   5 | vikram |
-+-----+--------+
-5 rows in set (0.00 sec)
+mysql> insert into course (courseid, course_name, credit) values (102, 'microeconomics', 3);
+Query OK, 1 row affected (0.00 sec)
 
-mysql> create view env as
-    -> select s.name, c.course_name, e.year
-    -> from student s
-    -> join enrollments e on s.eno = e.eno
-    -> join course c on e.courseid = c.courseid;
+mysql> insert into course (courseid, course_name, credit) values (103, 'organic chemistry', 4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from course;
++----------+-------------------+--------+
+| courseid | course_name       | credit |
++----------+-------------------+--------+
+|      101 | data structures   |      4 |
+|      102 | microeconomics    |      3 |
+|      103 | organic chemistry |      4 |
++----------+-------------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> insert into student (enno, name) values (1, 'rahul sharma');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student (enno, name) values (2, 'priya verma');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student (enno, name) values (3, 'amit patel');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++------+--------------+
+| enno | name         |
++------+--------------+
+|    1 | rahul sharma |
+|    2 | priya verma  |
+|    3 | amit patel   |
++------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into enrollments (eid, eno, courseid, year) values (1, 1, 101, 2025);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into enrollments (eid, eno, courseid, year) values (2, 2, 102, 2025);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into enrollments (eid, eno, courseid, year) values (3, 3, 103, 2025);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from enrollments;
++-----+-----+----------+------+
+| eid | eno | courseid | year |
++-----+-----+----------+------+
+|   1 |   1 |      101 | 2025 |
+|   2 |   2 |      102 | 2025 |
+|   3 |   3 |      103 | 2025 |
++-----+-----+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> create view studentview1 as select enno, name from student;
+ERROR 1050 (42S01): Table 'studentview1' already exists
+mysql> drop table if exists studentview1;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> create view studentview1 as select enno, name from student;
+ERROR 1050 (42S01): Table 'studentview1' already exists
+mysql> drop view if exists studentview1;
 Query OK, 0 rows affected (0.01 sec)
 
-mysql>
+mysql> drop view if exists env;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create view studentview1 as select enno, name from student;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into studentview1 values (1, 'arjun');
+ERROR 1062 (23000): Duplicate entry '1' for key 'student.PRIMARY'
+mysql> select * from studentview1;
++------+--------------+
+| enno | name         |
++------+--------------+
+|    1 | rahul sharma |
+|    2 | priya verma  |
+|    3 | amit patel   |
++------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> update studentview1 set name = 'rahul' where enno = 1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> delete from studentview1 where enno = 1;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`university`.`enrollments`, CONSTRAINT `enrollments_ibfk_1` FOREIGN KEY (`eno`) REFERENCES `student` (`enno`))
+mysql> delete from enrollments where eno = 1;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> delete from studentview1 where enno = 1;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from studentview1;
++------+-------------+
+| enno | name        |
++------+-------------+
+|    2 | priya verma |
+|    3 | amit patel  |
++------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> create view env as select s.name, c.course_name, e.year from student s join enrollments e on s.enno = e.eno join course c on e.courseid = c.courseid;
+Query OK, 0 rows affected (0.01 sec)
+
 mysql> select * from env;
-+--------+------------------+------+
-| name   | course_name      | year |
-+--------+------------------+------+
-| arjun  | mathematics      | 2024 |
-| neha   | physics          | 2024 |
-| rahul  | chemistry        | 2025 |
-| priya  | computer science | 2025 |
-| vikram | english          | 2024 |
-+--------+------------------+------+
-5 rows in set (0.00 sec)
++-------------+-------------------+------+
+| name        | course_name       | year |
++-------------+-------------------+------+
+| priya verma | microeconomics    | 2025 |
+| amit patel  | organic chemistry | 2025 |
++-------------+-------------------+------+
+2 rows in set (0.00 sec)
+
+mysql>
