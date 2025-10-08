@@ -1,162 +1,370 @@
-mysql> use college_info;
+Microsoft Windows [Version 10.0.26100.6584]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -p
+Enter password: *********
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -p
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 15
+Server version: 8.0.43 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college_db         |
+| college_info       |
+| first              |
+| information_schema |
+| mysql              |
+| performance_schema |
+| school             |
+| university         |
++--------------------+
+8 rows in set (0.00 sec)
+
+mysql> use school
 Database changed
-mysql> select count(*) from student;
+mysql> select abs(-50);
 +----------+
-| count(*) |
+| abs(-50) |
 +----------+
-|       10 |
+|       50 |
 +----------+
+1 row in set (0.00 sec)
+
+mysql> select ceil(5.2), floor(5.8);
++-----------+------------+
+| ceil(5.2) | floor(5.8) |
++-----------+------------+
+|         6 |          5 |
++-----------+------------+
+1 row in set (0.00 sec)
+
+mysql> select 10 div 3;
++----------+
+| 10 div 3 |
++----------+
+|        3 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select 10 % 3;
++--------+
+| 10 % 3 |
++--------+
+|      1 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select sign(-10), sign(0), sign(15);
++-----------+---------+----------+
+| sign(-10) | sign(0) | sign(15) |
++-----------+---------+----------+
+|        -1 |       0 |        1 |
++-----------+---------+----------+
+1 row in set (0.00 sec)
+
+mysql> select round(123.4555, 2);
++--------------------+
+| round(123.4555, 2) |
++--------------------+
+|             123.46 |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> select truncate(123.4555, 2);
++-----------------------+
+| truncate(123.4555, 2) |
++-----------------------+
+|                123.45 |
++-----------------------+
+1 row in set (0.00 sec)
+
+mysql> select concat('Dolly', '144');
++------------------------+
+| concat('Dolly', '144') |
++------------------------+
+| Dolly144               |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql> select repeat('Dolly', 9);
++-----------------------------------------------+
+| repeat('Dolly', 9)                            |
++-----------------------------------------------+
+| DollyDollyDollyDollyDollyDollyDollyDollyDolly |
++-----------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select reverse('Dolly');
++------------------+
+| reverse('Dolly') |
++------------------+
+| ylloD            |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> select insert('Dolly', 2, 2, 'an');
++-----------------------------+
+| insert('Dolly', 2, 2, 'an') |
++-----------------------------+
+| Danly                       |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select elt(2, 'alpha', 'beta', 'gamma');
++----------------------------------+
+| elt(2, 'alpha', 'beta', 'gamma') |
++----------------------------------+
+| beta                             |
++----------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select lpad('Dolly', 10, '*');
++------------------------+
+| lpad('Dolly', 10, '*') |
++------------------------+
+| *****Dolly             |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql> select rpad('Dolly', 10, '*');
++------------------------+
+| rpad('Dolly', 10, '*') |
++------------------------+
+| Dolly*****             |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql> select insert('Dolly', 4, 2, 'XYZ');
++------------------------------+
+| insert('Dolly', 4, 2, 'XYZ') |
++------------------------------+
+| DolXYZ                       |
++------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select left('Dolly', 3);
++------------------+
+| left('Dolly', 3) |
++------------------+
+| Dol              |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> select right('Dolly', 3);
++-------------------+
+| right('Dolly', 3) |
++-------------------+
+| lly               |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> select power(4, 3);
++-------------+
+| power(4, 3) |
++-------------+
+|          64 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select sqrt(144);
++-----------+
+| sqrt(144) |
++-----------+
+|        12 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select concat('hello', null, 'word');
++-------------------------------+
+| concat('hello', null, 'word') |
++-------------------------------+
+| NULL                          |
++-------------------------------+
+1 row in set (0.00 sec)
+
+mysql> create table emp (empid int primary key, ename varchar(50), salary decimal(10,2), dept varchar(50));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc emp;
++--------+---------------+------+-----+---------+-------+
+| Field  | Type          | Null | Key | Default | Extra |
++--------+---------------+------+-----+---------+-------+
+| empid  | int           | NO   | PRI | NULL    |       |
+| ename  | varchar(50)   | YES  |     | NULL    |       |
+| salary | decimal(10,2) | YES  |     | NULL    |       |
+| dept   | varchar(50)   | YES  |     | NULL    |       |
++--------+---------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into emp (empid, ename, salary, dept) values (1, 'Mohan', 40000, 'sales'), (2, 'Aarav', 60000, 'HR'), (3, 'Ravi', 45000, 'IT'), (4, 'Ankita', 70000, 'HR');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> desc emp;
++--------+---------------+------+-----+---------+-------+
+| Field  | Type          | Null | Key | Default | Extra |
++--------+---------------+------+-----+---------+-------+
+| empid  | int           | NO   | PRI | NULL    |       |
+| ename  | varchar(50)   | YES  |     | NULL    |       |
+| salary | decimal(10,2) | YES  |     | NULL    |       |
+| dept   | varchar(50)   | YES  |     | NULL    |       |
++--------+---------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emp;
++-------+--------+----------+-------+
+| empid | ename  | salary   | dept  |
++-------+--------+----------+-------+
+|     1 | Mohan  | 40000.00 | sales |
+|     2 | Aarav  | 60000.00 | HR    |
+|     3 | Ravi   | 45000.00 | IT    |
+|     4 | Ankita | 70000.00 | HR    |
++-------+--------+----------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select count(*) as total_employee from emp;
++----------------+
+| total_employee |
++----------------+
+|              4 |
++----------------+
 1 row in set (0.01 sec)
 
-mysql> select avg(credit) from course;
-+-------------+
-| avg(credit) |
-+-------------+
-|      3.1000 |
-+-------------+
-1 row in set (0.00 sec)
-
-mysql> select max(year) from enrollments;
-+-----------+
-| max(year) |
-+-----------+
-|      2025 |
-+-----------+
-1 row in set (0.00 sec)
-
-mysql> select sum(credit) from course;
-+-------------+
-| sum(credit) |
-+-------------+
-|          31 |
-+-------------+
-1 row in set (0.00 sec)
-
-mysql> select min(year) from enrollments;
-+-----------+
-| min(year) |
-+-----------+
-|      2023 |
-+-----------+
-1 row in set (0.00 sec)
-
-mysql> select upper(name) from student;
-+-------------+
-| upper(name) |
-+-------------+
-| ANITA       |
-| ARJUN       |
-| DEEPAK      |
-| ISHA        |
-| NEHA        |
-| PRIYA       |
-| RAHUL       |
-| RANI        |
-| SAMEER      |
-| VIKRAM      |
-+-------------+
-10 rows in set (0.00 sec)
-
-mysql> select length(name) from student;
+mysql> select sum(salary) as total_salary from emp;
 +--------------+
-| length(name) |
+| total_salary |
 +--------------+
-|            5 |
-|            5 |
-|            6 |
-|            4 |
-|            4 |
-|            5 |
-|            5 |
-|            4 |
-|            6 |
-|            6 |
+|    215000.00 |
 +--------------+
-10 rows in set (0.00 sec)
+1 row in set (0.00 sec)
 
-mysql> select concat(name, '_2025') from student;
-+-----------------------+
-| concat(name, '_2025') |
-+-----------------------+
-| anita_2025            |
-| arjun_2025            |
-| deepak_2025           |
-| isha_2025             |
-| neha_2025             |
-| priya_2025            |
-| rahul_2025            |
-| rani_2025             |
-| sameer_2025           |
-| vikram_2025           |
-+-----------------------+
-10 rows in set (0.00 sec)
+mysql> select avg(salary) as avg_salary from emp;
++--------------+
+| avg_salary   |
++--------------+
+| 53750.000000 |
++--------------+
+1 row in set (0.00 sec)
 
-mysql> select year + 1 from enrollments;
-+----------+
-| year + 1 |
-+----------+
-|     2024 |
-|     2024 |
-|     2025 |
-|     2025 |
-|     2025 |
-|     2025 |
-|     2025 |
-|     2026 |
-|     2026 |
-|     2026 |
-+----------+
-10 rows in set (0.00 sec)
+mysql> select min(salary) as min_salary from emp;
++------------+
+| min_salary |
++------------+
+|   40000.00 |
++------------+
+1 row in set (0.00 sec)
 
-mysql> select if(credit > 3, 'high', 'low') from course;
-+-------------------------------+
-| if(credit > 3, 'high', 'low') |
-+-------------------------------+
-| high                          |
-| low                           |
-| low                           |
-| high                          |
-| low                           |
-| low                           |
-| low                           |
-| low                           |
-| high                          |
-| low                           |
-+-------------------------------+
-10 rows in set (0.00 sec)
+mysql> select dept, count(*) as emp_count from emp group by dept;
++-------+-----------+
+| dept  | emp_count |
++-------+-----------+
+| sales |         1 |
+| HR    |         2 |
+| IT    |         1 |
++-------+-----------+
+3 rows in set (0.00 sec)
 
-mysql> select eno from enrollments where courseid = 101
-    -> union
-    -> select eno from enrollments where courseid = 102;
-+------+
-| eno  |
-+------+
-|    1 |
-|    2 |
-+------+
-2 rows in set (0.00 sec)
+mysql> select dept, avg(salary) as avg_salary from emp group by dept having avg(salary) > 50000;
++------+--------------+
+| dept | avg_salary   |
++------+--------------+
+| HR   | 65000.000000 |
++------+--------------+
+1 row in set (0.00 sec)
+
+mysql> select curdate();
++------------+
+| curdate()  |
++------------+
+| 2025-10-08 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select now();
++---------------------+
+| now()               |
++---------------------+
+| 2025-10-08 11:06:27 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select adddate(curdate(), interval 10 day);
++-------------------------------------+
+| adddate(curdate(), interval 10 day) |
++-------------------------------------+
+| 2025-10-18                          |
++-------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select last_day(curdate());
++---------------------+
+| last_day(curdate()) |
++---------------------+
+| 2025-10-31          |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> create table table1 (id int primary key, name varchar(50));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into table1 (id, name) values (1, 'vikky'), (2, 'Dolly'), (3, 'Ramesh');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from table1;
++----+--------+
+| id | name   |
++----+--------+
+|  1 | vikky  |
+|  2 | Dolly  |
+|  3 | Ramesh |
++----+--------+
+3 rows in set (0.00 sec)
+
+mysql> create database company;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use company;
+Database changed
+mysql> create table employee_us (id int, name varchar(100));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into employee_us values (1, 'vikky'), (2, 'DOlly'), (3, 'Ramesh');
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_us;
++------+--------+
+| id   | name   |
++------+--------+
+|    1 | vikky  |
+|    2 | DOlly  |
+|    3 | Ramesh |
++------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select name from employee_us where name in (select name from employee_us);
++--------+
+| name   |
++--------+
+| vikky  |
+| DOlly  |
+| Ramesh |
++--------+
+3 rows in set (0.00 sec)
 
 mysql>
-mysql> select eno from enrollments where courseid = 101
-    -> union all
-    -> select eno from enrollments where courseid = 102;
-+------+
-| eno  |
-+------+
-|    1 |
-|    2 |
-+------+
-2 rows in set (0.00 sec)
-
-mysql> select eno from enrollments where courseid = 101
-    -> and eno in (select eno from enrollments where courseid = 102);
-Empty set (0.01 sec)
-
-mysql> select eno from enrollments where courseid = 101
-    -> and eno not in (select eno from enrollments where courseid = 102);
-+------+
-| eno  |
-+------+
-|    1 |
-+------+
-1 row in set (0.00 sec)
