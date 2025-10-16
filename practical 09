@@ -1,0 +1,271 @@
+sql*plus: release 21.0.0.0.0 - production on sun sep 21 21:50:41 2025
+version 21.3.0.0.0
+
+copyright (c) 1982, 2021, oracle.  all rights reserved.
+
+enter user-name: system
+enter password:
+last successful login time: sun sep 21 2025 21:40:29 +05:30
+
+connected to:
+oracle database 21c express edition release 21.0.0.0.0 - production
+version 21.3.0.0.0
+
+sql> create table items(item_id int,item_name varchar(25),cost float,quantity int);
+
+table created.
+
+sql> insert into items values(501,'printer',15000,1);
+
+1 row created.
+
+sql> insert into items values(502,'desktop',26000,2);
+
+1 row created.
+
+sql> insert into items values(503,'scanner',34000,3);
+
+1 row created.
+
+sql> select * from items;
+
+   ITEM_ID ITEM_NAME               COST     QUANTITY
+---------- -------------------- ---------- ----------
+       501 printer                   15000          1
+       502 desktop                   26000          2
+       503 scanner                   34000          3
+code:
+implicit cursor:
+declare
+iid int;
+iname varchar(25);
+cost float;
+quantity int;
+begin
+iid := &iid;
+select item_id,item_name,cost,quantity into iid,iname,cost,quantity from items where item_id=iid;
+if sql%found then
+dbms_output.put_line(iid||iname||cost||quantity);
+end if;
+end;
+/
+output:
+
+sql> set serveroutput on
+sql> @c:\sql\items.sql
+enter value for iid: 502
+old   7: iid := &iid;
+new   7: iid := 502;
+select item_id,item_name,cost,quantity into iid,iname,cost,quantity where item_id=iid;
+sql> @c:\sql\items.sql
+enter value for iid: 502
+old   7: iid := &iid;
+new   7: iid := 502;
+502desktop260002
+
+pl/sql procedure successfully completed.
+
+sql> @c:\sql\items.sql
+enter value for iid: 501
+old   7: iid := &iid;
+new   7: iid := 501;
+501printer150001
+
+pl/sql procedure successfully completed.
+
+code: explicit cursor
+declare 
+iid int;
+iname varchar(50);
+price float;
+quantity int;
+cursor cur1(p float) is select * from items where cost>=p;
+begin
+open cur1(&p);
+loop 
+fetch cur1 into iid,iname,price,quantity;
+exit when cur1%notfound;
+dbms_output.put_line(iid||iname||price||quantity);
+end loop;
+close cur1;
+end;
+/
+output:
+
+sql> @c:\sql\items.sql
+enter value for p: 501
+old   8: open cur1(&p);
+new   8: open cur1(501);
+dbms_output.put_line(iid||iname||cost||quantity);
+                                 *
+error at line 12:
+ora-06550: line 12, column 34:
+pls-00201: identifier 'COST' must be declared
+ora-06550: line 12, column 1:
+pl/sql: statement ignored
+
+
+sql> @c:\sql\items.sql
+enter value for p: 501
+old   8: open cur1(&p);
+new   8: open cur1(501);
+501printer150001
+502desktop260002
+503scanner340003
+
+pl/sql procedure successfully completed.
+
+sql> @c:\sql\items.sql
+enter value for p: 20000
+old   8: open cur1(&p);
+new   8: open cur1(20000);
+502desktop260002
+503scanner340003
+
+pl/sql procedure successfully completed.
+
+sql> @c:\sql\items.sql
+enter value for p: 30000
+old   8: open cur1(&p);
+new   8: open cur1(30000);
+503scanner340003
+
+pl/sql procedure successfully completed.
+
+code: update cursor
+declare 
+iid int;
+iname varchar(50);
+price float;
+quantity int;
+cursor cur1(p float) is select * from items where cost>p for update;
+begin
+open cur1(&p);
+loop 
+fetch cur1 into iid,iname,price,quantity;
+exit when cur1%notfound;
+update items set cost=cost-2500 where current of cur1;
+dbms_output.put_line(iid||iname||price||quantity);
+end loop;
+close cur1;
+end;
+output :
+sql> set serveroutput on
+sql> @c:\sql\items.sql
+enter value for p: 502
+old   8: open cur1(&p);
+new   8: open cur1(502);
+502desktop235002
+503scanner315003
+
+pl/sql procedure successfully completed.
+
+sql> @c:\sql\items.sql
+enter value for p: 501
+old   8: open cur1(&p);
+new   8: open cur1(501);
+502desktop235002
+503scanner315003
+
+pl/sql procedure successfully completed.
+
+sql> select * from items;
+
+   ITEM_ID ITEM_NAME               COST     QUANTITY
+---------- -------------------- ---------- ----------
+       501 printer                   12500          1
+       502 desktop                   23500          2
+       503 scanner                   31500          3
+code: delete cursor
+declare 
+iid int;
+iname varchar(50);
+price float;
+quantity int;
+cursor cur1(p float) is select * from items where cost>p for update;
+begin
+open cur1(&p);
+loop 
+fetch cur1 into iid,iname,price,quantity;
+exit when cur1%notfound;
+delete from items where current of cur1;
+dbms_output.put_line(iid||iname||price||quantity);
+end loop;
+close cur1;
+end;
+/
+output:
+sql> set serveroutput on
+sql> @c:\sql\items.sql
+sp2-0310: unable to open file "c:\sql\items.sql"
+sql> @c:\sql\itemss.sql
+enter value for p: 501
+old   8: open cur1(&p);
+new   8: open cur1(501);
+502desktop235002
+503scanner315003
+
+pl/sql procedure successfully completed.
+
+sql> @c:\sql\itemss.sql
+enter value for p: 500
+old   8: open cur1(&p);
+new   8: open cur1(500);
+
+pl/sql procedure successfully completed.
+
+sql> select * from items;
+
+   ITEM_ID ITEM_NAME               COST     QUANTITY
+---------- -------------------- ---------- ----------
+       501 printer                   12500          1
+code: for loop 
+declare
+rec items%rowtype;
+cursor cur1 is select * from items;
+begin
+for rec in cur1 loop
+dbms_output.put_line(rec.item_id||rec.item_name||rec.cost||rec.quantity);
+end loop;
+end;
+/ 
+output:
+sql> insert into items values(502,'desktop',26000,2);
+
+1 row created.
+
+sql>  insert into items values(503,'scanner',22000,3);
+
+1 row created.
+
+sql> select * from items;
+
+   ITEM_ID ITEM_NAME               COST     QUANTITY
+---------- -------------------- ---------- ----------
+       501 printer                   12500          1
+       502 desktop                   26000          2
+       503 scanner                   22000          3
+
+sql> set serveroutput on
+sql> @c:\sql\itemss.sql
+501printer125001
+502desktop260002
+503scanner220003
+
+pl/sql procedure successfully completed.
+
+sql> select * from items;
+
+   ITEM_ID ITEM_NAME               COST     QUANTITY
+---------- -------------------- ---------- ----------
+       501 printer                   12500          1
+       502 desktop                   26000          2
+       503 scanner                   22000          3
+
+sql> @c:\sql\itemss.sql
+501printer125001
+502desktop260002
+503scanner220003
+
+pl/sql procedure successfully completed.
+
