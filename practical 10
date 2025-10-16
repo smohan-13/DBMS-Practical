@@ -1,0 +1,146 @@
+create or replace trigger bk_backup
+before update or delete on bookstore
+for each row 
+begin
+  insert into oldbooks values(:old.bookcode, :old.title, :old.writer, :old.publisher, :old.cost, :old.releasedate);
+end;
+/
+OUTPUT:
+
+SQL*Plus: Release 21.0.0.0.0 - Production on Sun Oct 19 09:34:29 2025
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle.  All rights reserved.
+
+
+
+Enter user-name: admin
+Enter password:
+Last Successful login time: Sun Oct 19 2025 09:34:29 +09:30
+
+Connected to:
+Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production
+Version 21.3.0.0.0
+
+SQL> create table bookstore(
+  2  bookcode int,
+  3  title varchar(25),
+  4  writer varchar(25),
+  5  publisher varchar(25),
+  6  cost float,
+  7  releasedate date);
+
+Table created.
+
+SQL> create table oldbooks as select * from bookstore;
+
+Table created.
+
+SQL> insert into bookstore values(201,'cloud tech','amit','novapress',950,'12-JAN-2025');
+
+1 row created.
+
+SQL> insert into bookstore values(202,'data magic','neel','cyberpub',870,'15-FEB-2025');
+
+1 row created.
+
+SQL> insert into bookstore values(203,'ai future','sana','infoscan',1020,'7-MAR-2025');
+
+1 row created.
+
+SQL> insert into bookstore values(204,'db systems','karan','bluewave',1200,'25-APR-2025');
+
+1 row created.
+
+SQL> select * from bookstore;
+
+   BOOKCODE TITLE                 WRITER                PUBLISHER
+---------- ---------------------- -------------------- --------------------
+      COST RELEASEDATE
+---------- ----------
+       201 cloud tech            amit                  novapress
+        950 12-JAN-25
+
+       202 data magic            neel                  cyberpub
+        870 15-FEB-25
+
+       203 ai future             sana                  infoscan
+       1020 7-MAR-25
+
+       204 db systems            karan                 bluewave
+       1200 25-APR-25
+
+SQL> @C:\sql\book_backup.sql
+
+Trigger created.
+
+SQL> delete from bookstore;
+
+4 rows deleted.
+
+SQL> select * from oldbooks;
+
+   BOOKCODE TITLE                 WRITER                PUBLISHER
+---------- ---------------------- -------------------- --------------------
+      COST RELEASEDATE
+---------- ----------
+       201 cloud tech            amit                  novapress
+        950 12-JAN-25
+
+       202 data magic            neel                  cyberpub
+        870 15-FEB-25
+
+       203 ai future             sana                  infoscan
+       1020 7-MAR-25
+
+       204 db systems            karan                 bluewave
+       1200 25-APR-25
+
+
+SQL> select * from bookstore;
+
+no rows selected.
+
+
+SQL> create table libstore(
+  2  bookcode int,
+  3  title varchar(25),
+  4  writer varchar(25),
+  5  publisher varchar(25),
+  6  price float,
+  7  releasedate date);
+
+Table created.
+
+STATEMENT TRIGGER:
+create or replace trigger store_restrict
+before update or delete or insert on libstore
+for each row 
+begin
+  if rtrim(upper(to_char(sysdate,'day','nls_date_language=english')))='SUNDAY' then 
+    raise_application_error(-20001,'actions not permitted on sunday');
+  end if;
+end;
+/
+OUTPUT:
+
+SQL> @C:\sql\book_backup.sql
+
+Trigger created.
+
+SQL> insert into libstore values(301,'networks','rahul','techpress',880,'3-JAN-2025');
+ insert into libstore values(301,'networks','rahul','techpress',880,'3-JAN-2025')
+             *
+ERROR at line 1:
+ORA-20001: actions not permitted on sunday
+ORA-06512: at "ADMIN.STORE_RESTRICT", line 3
+ORA-04088: error during execution of trigger 'ADMIN.STORE_RESTRICT'
+
+
+SQL> delete from libstore;
+delete from libstore
+            *
+ERROR at line 1:
+ORA-20001: actions not permitted on sunday
+ORA-06512: at "ADMIN.STORE_RESTRICT", line 3
+ORA-04088: error during execution of trigger 'ADMIN.STORE_RESTRICT'
