@@ -1,0 +1,116 @@
+create or replace procedure calc_grade(sid in number, score in number, remark out varchar2)
+is
+begin
+  if score <= 1500 and score >= 900 then
+    remark := 'passed with distinction';
+  elsif score <= 899 and score >= 825 then
+    remark := 'passed with first class';
+  elsif score <= 824 and score >= 750 then
+    remark := 'passed with second class';
+  else
+    remark := 'failed';
+  end if;
+end;
+/
+
+declare
+  sid number;
+  score number;
+  sname varchar2(60);
+  remark varchar2(30);
+begin
+  sid := &sid;
+  select studid, fullname, totalscore into sid, sname, score from exam_result where studid = sid;
+
+  calc_grade(sid, score, remark);
+
+  dbms_output.put_line('Student ID: ' || sid);
+  dbms_output.put_line('Name: ' || sname);
+  dbms_output.put_line('Score: ' || score);
+  dbms_output.put_line('Result: ' || remark);
+end;
+/
+SQL*Plus: Release 21.0.0.0.0 - Production on Fri Oct 18 12:48:15 2025
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle.  All rights reserved.
+
+Enter user-name: admin
+Enter password:
+Last Successful login time: Fri Oct 18 2025 12:35:28 +05:30
+
+Connected to:
+Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production
+Version 21.3.0.0.0
+
+PL/SQL procedure successfully completed.
+
+SQL> create table exam_result (
+  2    studid number primary key,
+  3    fullname varchar2(60),
+  4    totalscore number
+  5  );
+
+Table created.
+
+SQL>
+SQL> insert into exam_result values (201, 'rohit deshmukh', 1420);
+
+1 row created.
+
+SQL> insert into exam_result values (202, 'tanya sharma', 1280);
+
+1 row created.
+
+SQL> insert into exam_result values (203, 'manav patil', 970);
+
+1 row created.
+
+SQL> insert into exam_result values (204, 'kavita rao', 690);
+
+1 row created.
+
+SQL> insert into exam_result values (205, 'sagar joshi', 560);
+
+1 row created.
+
+SQL> insert into exam_result values (206, 'mehul jain', 1320);
+
+1 row created.
+
+SQL> insert into exam_result values (207, 'reema kapoor', 1120);
+
+1 row created.
+
+SQL> insert into exam_result values (208, 'dev anand', 780);
+
+1 row created.
+
+SQL> insert into exam_result values (209, 'isha reddy', 640);
+
+1 row created.
+
+SQL> insert into exam_result values (210, 'sameer khan', 480);
+
+1 row created.
+
+SQL>
+SQL> commit;
+
+Commit complete.
+
+SQL> @C:\Users\admin\Desktop\dbms_practical\calc_grade
+
+Procedure created.
+
+SQL> @C:\Users\admin\Desktop\dbms_practical\calc_grade
+
+Procedure created.
+
+Enter value for sid: 202
+old   7:   sid := &sid;
+new   7:   sid := 202;
+Student ID: 202
+Name: tanya sharma
+Score: 1280
+Result: passed with distinction
