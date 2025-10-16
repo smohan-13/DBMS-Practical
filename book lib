@@ -1,0 +1,155 @@
+declare
+    uid number;
+    bname varchar2(30);
+    isdate date;
+    retdate date;
+    days_diff int;
+    penalty float(10);
+begin
+    uid := &uid;
+    bname := '&bname';
+    retdate := sysdate;
+
+    select issued_on into isdate from book_issue
+    where user_id = uid and book_title = bname and status = 'I';
+
+    days_diff := retdate - isdate;
+    dbms_output.put_line('total days: ' || days_diff);
+
+    if days_diff < 15 then
+        dbms_output.put_line('no fine');
+        update book_issue set status = 'R' where user_id = uid and book_title = bname;
+
+    elsif days_diff > 15 and days_diff < 30 then
+        penalty := days_diff * 5;
+        update book_issue set status = 'R' where user_id = uid and book_title = bname;
+
+    elsif days_diff > 30 then
+        penalty := days_diff * 50;
+        update book_issue set status = 'R' where user_id = uid and book_title = bname;
+
+    else
+        dbms_output.put_line('record not found');
+    end if;
+
+    if penalty > 0 then
+        insert into penalty_record values (uid, retdate, days_diff, penalty);
+    end if;
+
+exception
+    when no_data_found then
+        dbms_output.put_line('entry not found in table');
+end;
+/
+sql*plus: release 21.0.0.0.0 - production on mon oct 14 16:03:28 2025
+version 21.3.0.0.0
+
+copyright (c) 1982, 2021, oracle.  all rights reserved.
+
+enter user-name: admin
+enter password:
+last successful login time: mon oct 14 2025 15:46:10 +05:30
+
+connected to:
+oracle database 21c express edition release 21.0.0.0.0 - production
+version 21.3.0.0.0
+
+sql> create table book_issue (user_id int, uname varchar(40), book_title varchar(20), issued_on date, status varchar(1));
+table created.
+
+sql> desc book_issue;
+ name                                      null?    type
+ ----------------------------------------- -------- ----------------------------
+ USER_ID                                           NUMBER(38)
+ UNAME                                             VARCHAR2(40)
+ BOOK_TITLE                                        VARCHAR2(20)
+ ISSUED_ON                                         DATE
+ STATUS                                            VARCHAR2(1)
+
+sql> create table penalty_record (user_id int, returned_on date, total_days int, fine_amount float);
+table created.
+
+sql> desc penalty_record;
+ name                                      null?    type
+ ----------------------------------------- -------- ----------------------------
+ USER_ID                                           NUMBER(40)
+ RETURNED_ON                                       DATE
+ TOTAL_DAYS                                        NUMBER(38)
+ FINE_AMOUNT                                       FLOAT(126)
+
+sql> insert into book_issue values (401,'nitesh','python','07-jan-2025','I');
+1 row created.
+
+sql> insert into book_issue values (402,'rekha','oracle','08-feb-2025','I');
+1 row created.
+
+sql> insert into book_issue values (403,'rajesh','algebra','09-mar-2025','I');
+1 row created.
+
+sql> insert into book_issue values (404,'tina','clang','10-apr-2025','I');
+1 row created.
+
+sql> insert into book_issue values (405,'kumar','plsql','11-may-2025','I');
+1 row created.
+
+sql> select * from book_issue;
+
+   USER_ID UNAME              BOOK_TITLE  ISSUED_ON  S
+---------- ------------------ ----------- ---------- -
+       401 nitesh             python      07-JAN-25  I
+       402 rekha              oracle      08-FEB-25  I
+       403 rajesh             algebra     09-MAR-25  I
+       404 tina               clang       10-APR-25  I
+       405 kumar              plsql       11-MAY-25  I
+
+sql> set serveroutput on
+sql> @c:\sql\activity4.sql
+enter value for uid: 402
+old   9: uid := &uid;
+new   9: uid := 402;
+enter value for bname: oracle
+old  10: bname := '&bname';
+new  10: bname := 'oracle';
+total days: 40
+
+pl/sql procedure successfully completed.
+
+sql> @c:\sql\activity4.sql
+enter value for uid: 405
+old   9: uid := &uid;
+new   9: uid := 405;
+enter value for bname: plsql
+old  10: bname := '&bname';
+new  10: bname := 'plsql';
+total days: 9
+no fine
+
+sql> @c:\sql\activity4.sql
+enter value for uid: 401
+old   9: uid := &uid;
+new   9: uid := 401;
+enter value for bname: python
+old  10: bname := '&bname';
+new  10: bname := 'python';
+total days: 58
+
+pl/sql procedure successfully completed.
+
+sql> select * from book_issue;
+
+   USER_ID UNAME              BOOK_TITLE  ISSUED_ON  S
+---------- ------------------ ----------- ---------- -
+       401 nitesh             python      07-JAN-25  R
+       402 rekha              oracle      08-FEB-25  R
+       403 rajesh             algebra     09-MAR-25  I
+       404 tina               clang       10-APR-25  I
+       405 kumar              plsql       11-MAY-25  R
+
+sql> select * from penalty_record;
+
+   USER_ID RETURNED_ON  TOTAL_DAYS   FINE_AMOUNT
+---------- -----------  ----------   ------------
+       402 21-MAR-25         40          2000
+       401 07-MAR-25         58          2900
+
+sql>
