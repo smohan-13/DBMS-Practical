@@ -1,0 +1,128 @@
+Please enter a MongoDB connection string (Default: mongodb://localhost/): connect
+connect
+Current Mongosh Log ID: 68df9c0e3639177709cebea3
+Connecting to:          mongodb://127.0.0.1:27017/connect?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.8
+Using MongoDB:          8.2.0
+Using Mongosh:          2.5.8
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2025-10-03T14:08:41.978+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+connect> use dbs
+switched to db dbs
+dbs> show dbs
+admin     40.00 KiB
+alpha      8.00 KiB
+ch         8.00 KiB
+company   68.00 KiB
+config    36.00 KiB
+emp       76.00 KiB
+local     64.00 KiB
+school   152.00 KiB
+test     120.00 KiB
+dbs> use demoexample
+switched to db demoexample
+demoexample> db.createCollection('stud')
+{ ok: 1 }
+demoexample> show dbs
+admin         40.00 KiB
+alpha          8.00 KiB
+ch             8.00 KiB
+company       68.00 KiB
+config        36.00 KiB
+demoexample    8.00 KiB
+emp           76.00 KiB
+local         64.00 KiB
+school       152.00 KiB
+test         120.00 KiB
+demoexample> db.stud.insertOne({RollNo:101,name:'mohit',Class:'te'})
+{
+  acknowledged: true,
+  insertedId: ObjectId('68df9cef3639177709cebea4')
+}
+demoexample> db.stud.insertOne({RollNo:101,name:{fname:'kunal',mname:'balasaheb',lname:'Dumbare'},Class:'te'})
+{
+  acknowledged: true,
+  insertedId: ObjectId('68df9d7d3639177709cebea5')
+}
+demoexample> db.stud.find()
+[
+  {
+    _id: ObjectId('68df9cef3639177709cebea4'),
+    RollNo: 101,
+    name: 'mohit',
+    Class: 'te'
+  },
+  {
+    _id: ObjectId('68df9d7d3639177709cebea5'),
+    RollNo: 101,
+    name: { fname: 'kunal', mname: 'balasaheb', lname: 'Dumbare' },
+    Class: 'te'
+  }
+]
+demoexample> db.stud.update({RollNo:101},{$set:{name:'rohit'}})
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+demoexample> db.stud.find()
+[
+  {
+    _id: ObjectId('68df9cef3639177709cebea4'),
+    RollNo: 101,
+    name: 'rohit',
+    Class: 'te'
+  },
+  {
+    _id: ObjectId('68df9d7d3639177709cebea5'),
+    RollNo: 101,
+    name: { fname: 'kunal', mname: 'balasaheb', lname: 'Dumbare' },
+    Class: 'te'
+  }
+]
+demoexample> db.stud.insertOne({RollNo:102,name:{fname:'kunal',mname:'balasaheb',lname:'Dumbare'},Class:'te'})
+{
+  acknowledged: true,
+  insertedId: ObjectId('68df9e8c3639177709cebea6')
+}
+demoexample> db.stud.remove({RollNo:101})
+DeprecationWarning: Collection.remove() is deprecated. Use deleteOne, deleteMany, findOneAndDelete, or bulkWrite.
+{ acknowledged: true, deletedCount: 2 }
+demoexample> db.stud.find()
+[
+  {
+    _id: ObjectId('68df9e8c3639177709cebea6'),
+    RollNo: 102,
+    name: { fname: 'kunal', mname: 'balasaheb', lname: 'Dumbare' },
+    Class: 'te'
+  }
+]
+demoexample> db.stud.insertOne({RollNo:103,name:{fname:'Tanmay',mname:'balasaheb',lname:'Dumbare'},contact:[9881248307,9881083180],Class:'te'})
+{
+  acknowledged: true,
+  insertedId: ObjectId('68dfa41d3639177709cebea7')
+}
+demoexample> db.stud.find()
+[
+  {
+    _id: ObjectId('68df9e8c3639177709cebea6'),
+    RollNo: 102,
+    name: { fname: 'kunal', mname: 'balasaheb', lname: 'Dumbare' },
+    Class: 'te'
+  },
+  {
+    _id: ObjectId('68dfa41d3639177709cebea7'),
+    RollNo: 103,
+    name: { fname: 'Tanmay', mname: 'balasaheb', lname: 'Dumbare' },
+    contact: [ 9881248307, 9881083180 ],
+    Class: 'te'
+  }
+]
