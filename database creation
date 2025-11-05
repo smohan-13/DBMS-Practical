@@ -1,0 +1,381 @@
+Database creation code:
+package ll;
+import java.sql.*;
+
+
+public class db {
+
+    public static void main(String[] args) {
+        try {
+      
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+           
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/", "root", "root");
+
+            
+            Statement stm = con.createStatement();
+
+            
+            String str = "CREATE DATABASE college";
+
+           
+            stm.executeUpdate(str);
+            System.out.println("Database created");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+code output:Database created
+mysql output:
+Microsoft Windows [Version 10.0.19045.6396]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\User>mysql -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 9.3.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| demo               |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.560 sec)
+
+Table creation code:
+package ll;
+import java.sql.*;
+
+
+public class lm {
+
+    public static void main(String[] args) {
+        try {
+      
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+           
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/college", "root", "root");
+
+            
+            Statement stm = con.createStatement();
+
+            
+            String str = "create table stud(rollno int,Name varchar(10),Class varchar(10))";
+
+           
+            stm.executeUpdate(str);
+            System.out.println("table created created");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+OUTPUT:table created created
+MYSQL OUTPUT:
+mysql> use college;
+Database changed
+mysql> desc stud;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| rollno | int         | YES  |     | NULL    |       |
+| Name   | varchar(10) | YES  |     | NULL    |       |
+| Class  | varchar(10) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.250 sec)
+
+Value inseration code:
+package ll;
+
+import java.sql.*;
+import java.util.*;
+
+public class kl {
+
+    public static void main(String[] args) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/college", "root", "root");
+
+            Statement stm = con.createStatement();
+            Scanner sc = new Scanner(System.in);
+
+            int rollno;
+            String name;
+            String cla;
+
+            System.out.println("Enter the roll no of student: ");
+            rollno = sc.nextInt();
+            sc.nextLine(); // consume newline
+
+            System.out.println("Enter the name of student: ");
+            name = sc.nextLine();
+
+            System.out.println("Enter the class of the student: ");
+            cla = sc.nextLine();
+
+            // Wrap string values in single quotes
+            String str = "INSERT INTO stud VALUES (" + rollno + ", '" + name + "', '" + cla + "')";
+
+            stm.executeUpdate(str);
+            System.out.println("Value is inserted");
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+output:
+Enter the roll no of student: 
+102
+Enter the name of student: 
+tamay
+Enter the class of the student: 
+fe
+Value is inserted
+MYSQL OUTPUT:
+mysql> select * from stud;
++--------+-------+-------+
+| rollno | Name  | Class |
++--------+-------+-------+
+|    101 | kunal | te    |
+|    102 | tamay | fe    |
++--------+-------+-------+
+2 rows in set (0.007 sec)
+
+Code :whileloop
+package ll;
+import java.sql.*;
+import java.util.*;
+
+public class nm {
+	public static void main(String[] args){
+		try
+		{
+		    Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/college", "root", "root");
+
+            Statement stm = con.createStatement();
+            ResultSet rs=stm.executeQuery("select * from stud");
+            while(rs.next())
+            {
+            	System.out.println("RollNO: "+rs.getInt("rollno"));
+            	System.out.println("Name: "+rs.getString("Name"));
+            	System.out.println("Class:  "+rs.getString("Class"));
+            }
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+
+}
+OUTPUT:
+RollNO: 101
+Name: kunal
+Class:  te
+RollNO: 102
+Name: tamay
+Class:  fe
+
+UPDATE CODE:
+package ll;
+import java.sql.*;
+import java.util.*;
+
+public class up {
+
+	public static void main(String[] args) {
+		try {
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/college", "root", "root");
+
+            Statement stm = con.createStatement();
+
+            Scanner sc = new Scanner(System.in);
+
+            System.out.print("Enter student ID to update: ");
+            int id = sc.nextInt();
+          
+
+            System.out.print("Enter new name: ");
+            String name = sc.next();
+
+            String sql = "UPDATE stud SET name='" + name + "' WHERE rollno=" +id;
+            int rowsAffected = stm.executeUpdate(sql);
+
+            System.out.println(rowsAffected + " row(s) updated.");
+
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+	}
+
+}
+OUTPUT:
+Enter student ID to update: 101
+Enter new name: Tejas
+1 row(s) updated.
+MYSQL OUTPUT:
+mysql> select * from stud;
++--------+-------+-------+
+| rollno | Name  | Class |
++--------+-------+-------+
+|    101 | kunal | te    |
+|    102 | tamay | fe    |
++--------+-------+-------+
+2 rows in set (0.356 sec)
+
+mysql> select * from stud;
++--------+-------+-------+
+| rollno | Name  | Class |
++--------+-------+-------+
+|    101 | Tejas | te    |
+|    102 | tamay | fe    |
++--------+-------+-------+
+2 rows in set (0.006 sec)
+
+DO WHILE LOOP CODE:
+package ll;
+
+import java.sql.*;
+import java.util.*;
+
+public class MenuApp {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n========= MENU =========");
+            System.out.println("1. Create Database");
+            System.out.println("2. Create Table");
+            System.out.println("3. Insert Record");
+            System.out.println("4. Display Records");
+            System.out.println("5. Update Record");
+            System.out.println("6. Exit");
+            System.out.println("========================");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+
+            try {
+                // Load MySQL driver
+                Class.forName("com.mysql.cj.jdbc.Driver");
+
+                switch (choice) {
+                    case 1: { // Create Database
+                        Connection con = DriverManager.getConnection(
+                                "jdbc:mysql://localhost:3306/", "root", "root");
+                        Statement stm = con.createStatement();
+                        String str = "CREATE DATABASE college";
+                        stm.executeUpdate(str);
+                        System.out.println("Database created.");
+                        con.close();
+                        break;
+                    }
+                    case 2: { // Create Table
+                        Connection con = DriverManager.getConnection(
+                                "jdbc:mysql://localhost:3306/college", "root", "root");
+                        Statement stm = con.createStatement();
+                        String str = "CREATE TABLE stud(rollno INT, Name VARCHAR(10), Class VARCHAR(10))";
+                        stm.executeUpdate(str);
+                        System.out.println("Table created.");
+                        con.close();
+                        break;
+                    }
+                    case 3: { // Insert Record
+                        Connection con = DriverManager.getConnection(
+                                "jdbc:mysql://localhost:3306/college", "root", "root");
+                        Statement stm = con.createStatement();
+                        System.out.print("Enter rollno: ");
+                        int rollno = sc.nextInt();
+                        sc.nextLine(); // consume newline
+                        System.out.print("Enter name: ");
+                        String name = sc.nextLine();
+                        System.out.print("Enter class: ");
+                        String cla = sc.nextLine();
+                        String str = "INSERT INTO stud VALUES(" + rollno + ", '" + name + "', '" + cla + "')";
+                        stm.executeUpdate(str);
+                        System.out.println("Record inserted.");
+                        con.close();
+                        break;
+                    }
+                    case 4: { // Display Records
+                        Connection con = DriverManager.getConnection(
+                                "jdbc:mysql://localhost:3306/college", "root", "root");
+                        Statement stm = con.createStatement();
+                        ResultSet rs = stm.executeQuery("SELECT * FROM stud");
+                        while (rs.next()) {
+                            System.out.println("RollNO: " + rs.getInt("rollno"));
+                            System.out.println("Name: " + rs.getString("Name"));
+                            System.out.println("Class: " + rs.getString("Class"));
+                            System.out.println("---------------------");
+                        }
+                        con.close();
+                        break;
+                    }
+                    case 5: { // Update Record
+                        Connection con = DriverManager.getConnection(
+                                "jdbc:mysql://localhost:3306/college", "root", "root");
+                        Statement stm = con.createStatement();
+                        System.out.print("Enter student rollno to update: ");
+                        int id = sc.nextInt();
+                        sc.nextLine(); // consume newline
+                        System.out.print("Enter new name: ");
+                        String name = sc.nextLine();
+                        String sql = "UPDATE stud SET Name='" + name + "' WHERE rollno=" + id;
+                        int rowsAffected = stm.executeUpdate(sql);
+                        System.out.println(rowsAffected + " row(s) updated.");
+                        con.close();
+                        break;
+                    }
+                    case 6:
+                        System.out.println("Exiting program...");
+                        break;
+                    default:
+                        System.out.println("Invalid choice! Try again.");
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e);
+            }
+
+        } while (choice != 0);
+
+        sc.close();
+    }
+}
+OUTPUT:
+
+========= MENU =========
+1. Create Database
+2. Create Table
+3. Insert Record
+4. Display Records
+5. Update Record
+6. Exit
