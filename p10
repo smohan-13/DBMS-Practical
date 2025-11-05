@@ -1,0 +1,202 @@
+show dbs
+admin    40.00 KiB
+bank     48.00 KiB
+banking   3.67 MiB
+config   72.00 KiB
+local    64.00 KiB
+
+use demoex
+switched to db demoex
+
+show dbs
+admin     40.00 KiB
+bank      48.00 KiB
+banking    3.67 MiB
+config   108.00 KiB
+local     64.00 KiB
+
+createCollection('fees')
+ReferenceError: createCollection is not defined
+
+createCollection("fees");
+ReferenceError: createCollection is not defined
+
+db.createCollection("fees");
+{ ok: 1 }
+
+db.fees.insertOne({rollno:101,name:"Tejas",class:"TE",amount:47299,pdate:10-11-2025});
+{
+  acknowledged: true,
+  insertedId: ObjectId('68e8d3eb2d74e8d374597d4f')
+}
+
+db.fees.insertMany({rollno:102,name:"Pranav",class:"TE",amount:47000,pdate:1-11-2025},{rollno:103,name:"Kishor",class:"TE",amount:50000,pdate:5-11-2025});
+MongoInvalidArgumentError: Argument "docs" must be an array of documents
+
+db.fees.insertMany([{rollno:102,name:"Pranav",class:"TE",amount:47000,pdate:1-11-2025},{rollno:103,name:"Kishor",class:"TE",amount:50000,pdate:5-11-2025}]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('68e8d5112d74e8d374597d50'),
+    '1': ObjectId('68e8d5112d74e8d374597d51')
+  }
+}
+
+db.fees.find()
+{
+  _id: ObjectId('68e8d3eb2d74e8d374597d4f'),
+  rollno: 101,
+  name: 'Tejas',
+  class: 'TE',
+  amount: 47299,
+  pdate: -2026
+}
+{
+  _id: ObjectId('68e8d5112d74e8d374597d50'),
+  rollno: 102,
+  name: 'Pranav',
+  class: 'TE',
+  amount: 47000,
+  pdate: -2035
+}
+{
+  _id: ObjectId('68e8d5112d74e8d374597d51'),
+  rollno: 103,
+  name: 'Kishor',
+  class: 'TE',
+  amount: 50000,
+  pdate: -2031
+}
+
+db.fees.aggregate([{$group:{_id:null,total_amount:{$sum:'$amount'}}}])
+{
+  _id: null,
+  total_amount: 144299
+}
+
+db.fees.aggregate([{$group:{_id:$class,total_amount:{$sum:'$amount'}}}])
+ReferenceError: $class is not defined
+
+db.fees.aggregate([{$group:{_id:'$class',total_amount:{$sum:'$amount'}}}])
+{
+  _id: 'TE',
+  total_amount: 144299
+}
+
+db.fees.aggregate([{$group:{_id:'$class',total_amount:{$min:'$amount'}}}])
+{
+  _id: 'TE',
+  total_amount: 47000
+}
+
+db.fees.aggregate([{$group:{_id:'$class',total_amount:{$max:'$amount'}}}])
+{
+  _id: 'TE',
+  total_amount: 50000
+}
+
+db.fees.aggregate([{$group:{_id:'$class',total_amount:{$push:'$amount'}}}])
+{
+  _id: 'TE',
+  total_amount: [
+    47299,
+    47000,
+    50000
+  ]
+}
+
+db.fees.insertOne({rollno:104,name:"Kunal",class:"BE",amount:40000,pdate:10-10-2025});
+{
+  acknowledged: true,
+  insertedId: ObjectId('68e8d7582d74e8d374597d52')
+}
+
+db.fees.aggregate([{$group:{_id:'$class',total_amount:{$push:'$amount'}}}])
+{
+  _id: 'BE',
+  total_amount: [
+    40000
+  ]
+}
+{
+  _id: 'TE',
+  total_amount: [
+    47299,
+    47000,
+    50000
+  ]
+}
+
+db.fees.aggregate([{$group:{_id:'$class',total_amount:{$addToSet:'$amount'}}}])
+{
+  _id: 'BE',
+  total_amount: [
+    40000
+  ]
+}
+{
+  _id: 'TE',
+  total_amount: [
+    47000,
+    47299,
+    50000
+  ]
+}
+
+db.fees.aggregate([{$group:{_id:'$class',total_amount:{$first:'$amount'}}}])
+{
+  _id: 'BE',
+  total_amount: 40000
+}
+{
+  _id: 'TE',
+  total_amount: 47299
+}
+
+db.fees.aggregate([{$group:{_id:'$class',total_amount:{$last:'$amount'}}}])
+{
+  _id: 'TE',
+  total_amount: 50000
+}
+{
+  _id: 'BE',
+  total_amount: 40000
+}
+
+de.fees.createIndex(rollno:1);
+SyntaxError: Unexpected token, expected "," (1:26)
+
+db.fees.createIndex(rollno:1);
+SyntaxError: Unexpected token, expected "," (1:26)
+
+db.fees.createIndex({rollno:1});
+rollno_1
+
+db.fees.getIndexes();
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { rollno: 1 }, name: 'rollno_1' }
+]
+
+db.fees.createIndex({name:1,class:1});
+name_1_class_1
+
+db.fees.getIndexes();
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { rollno: 1 }, name: 'rollno_1' },
+  { v: 2, key: { name: 1, class: 1 }, name: 'name_1_class_1' }
+]
+
+db.fees.createIndex({class:1},{spare:true});
+class_1
+
+db.fees.getIndexes();
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { rollno: 1 }, name: 'rollno_1' },
+  { v: 2, key: { name: 1, class: 1 }, name: 'name_1_class_1' },
+  { v: 2, key: { class: 1 }, name: 'class_1' }
+]
+
+demoex
