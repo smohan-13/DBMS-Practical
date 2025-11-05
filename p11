@@ -1,0 +1,214 @@
+show dbs
+admin        40.00 KiB
+config       72.00 KiB
+demo          8.00 KiB
+demoexample  68.00 KiB
+local        64.00 KiB
+
+use demo
+switched to db demo
+
+db.emp.find()
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510a1'),
+  Age: 32,
+  Gender: 'Male',
+  'Education Level': "Bachelor's",
+  'Job Title': 'Software Engineer',
+  'Years of Experience': 5,
+  Salary: 90000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510a2'),
+  Age: 28,
+  Gender: 'Female',
+  'Education Level': "Master's",
+  'Job Title': 'Data Analyst',
+  'Years of Experience': 3,
+  Salary: 65000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510a3'),
+  Age: 45,
+  Gender: 'Male',
+  'Education Level': 'PhD',
+  'Job Title': 'Senior Manager',
+  'Years of Experience': 15,
+  Salary: 150000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510a4'),
+  Age: 36,
+  Gender: 'Female',
+  'Education Level': "Bachelor's",
+  'Job Title': 'Sales Associate',
+  'Years of Experience': 7,
+  Salary: 60000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510a5'),
+  Age: 52,
+  Gender: 'Male',
+  'Education Level': "Master's",
+  'Job Title': 'Director',
+  'Years of Experience': 20,
+  Salary: 200000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510a6'),
+  Age: 29,
+  Gender: 'Male',
+  'Education Level': "Bachelor's",
+  'Job Title': 'Marketing Analyst',
+  'Years of Experience': 2,
+  Salary: 55000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510a7'),
+  Age: 42,
+  Gender: 'Female',
+  'Education Level': "Master's",
+  'Job Title': 'Product Manager',
+  'Years of Experience': 12,
+  Salary: 120000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510a8'),
+  Age: 31,
+  Gender: 'Male',
+  'Education Level': "Bachelor's",
+  'Job Title': 'Sales Manager',
+  'Years of Experience': 4,
+  Salary: 80000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510a9'),
+  Age: 26,
+  Gender: 'Female',
+  'Education Level': "Bachelor's",
+  'Job Title': 'Marketing Coordinator',
+  'Years of Experience': 1,
+  Salary: 45000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510aa'),
+  Age: 38,
+  Gender: 'Male',
+  'Education Level': 'PhD',
+  'Job Title': 'Senior Scientist',
+  'Years of Experience': 10,
+  Salary: 110000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510ab'),
+  Age: 29,
+  Gender: 'Male',
+  'Education Level': "Master's",
+  'Job Title': 'Software Developer',
+  'Years of Experience': 3,
+  Salary: 75000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510ac'),
+  Age: 48,
+  Gender: 'Female',
+  'Education Level': "Bachelor's",
+  'Job Title': 'HR Manager',
+  'Years of Experience': 18,
+  Salary: 140000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510ad'),
+  Age: 35,
+  Gender: 'Male',
+  'Education Level': "Bachelor's",
+  'Job Title': 'Financial Analyst',
+  'Years of Experience': 6,
+  Salary: 65000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510ae'),
+  Age: 40,
+  Gender: 'Female',
+  'Education Level': "Master's",
+  'Job Title': 'Project Manager',
+  'Years of Experience': 14,
+  Salary: 130000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510af'),
+  Age: 27,
+  Gender: 'Male',
+  'Education Level': "Bachelor's",
+  'Job Title': 'Customer Service Rep',
+  'Years of Experience': 2,
+  Salary: 40000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510b0'),
+  Age: 44,
+  Gender: 'Male',
+  'Education Level': "Bachelor's",
+  'Job Title': 'Operations Manager',
+  'Years of Experience': 16,
+  Salary: 125000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510b1'),
+  Age: 33,
+  Gender: 'Female',
+  'Education Level': "Master's",
+  'Job Title': 'Marketing Manager',
+  'Years of Experience': 7,
+  Salary: 90000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510b2'),
+  Age: 39,
+  Gender: 'Male',
+  'Education Level': 'PhD',
+  'Job Title': 'Senior Engineer',
+  'Years of Experience': 12,
+  Salary: 115000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510b3'),
+  Age: 25,
+  Gender: 'Female',
+  'Education Level': "Bachelor's",
+  'Job Title': 'Data Entry Clerk',
+  'Years of Experience': 0,
+  Salary: 35000
+}
+{
+  _id: ObjectId('68ea4e0194a8b0ac3c2510b4'),
+  Age: 51,
+  Gender: 'Male',
+  'Education Level': "Bachelor's",
+  'Job Title': 'Sales Director',
+  'Years of Experience': 22,
+  Salary: 180000
+}
+
+var map = function(){ emit(this.Gender, this.Salary) }
+var reduce = function(key, values){ return Array.sum(values) }
+
+db.emp.mapReduce(
+   map,
+   reduce,
+   { out: "output" }
+)
+DeprecationWarning: Collection.mapReduce() is deprecated. Use an aggregation instead.
+{ result: 'output', ok: 1 }
+
+db.output.find()
+{
+  _id: 'Male',
+  value: 20150350
+}
+{
+  _id: 'Female',
+  value: 17365000
+}
+
+demo
